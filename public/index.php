@@ -66,23 +66,33 @@ switch ($url) {
         require __DIR__ . '/../src/Negocio/InvitacionesController.php';
         $invitacionesController = new InvitacionesController($conexion);
 
-        // Asegúrate de validar y sanitizar este valor
+        // Asegúrate de validar y sanitizar estos valores
         $idEvento = isset($queryParams['id']) ? $queryParams['id'] : null;
+        $nombreEvento = isset($queryParams['titulo']) ? $queryParams['titulo'] : null;
+        $lugar = isset($queryParams['direccion']) ? $queryParams['direccion'] : null;
+        $descripcion = isset($queryParams['descripcion']) ? $queryParams['descripcion'] : null;
+        $hora = isset($queryParams['fecha']) ? $queryParams['fecha'] : null;
 
-        if ($idEvento) {
-            $invitacionesController->listarInvitacionesPorEvento($idEvento);
+        if ($idEvento && $nombreEvento && $lugar && $hora) {
+            $invitacionesController->listarInvitacionesPorEvento($idEvento, $nombreEvento, $lugar, $descripcion, $hora);
         } else {
-            // Manejar el caso en el que no se proporciona el ID del evento
-            echo "ID del evento requerido.";
+            // Manejar el caso en el que no se proporcionan todos los datos necesarios
+            echo "Datos del evento requeridos.";
         }
         break;
 
-    case '/invitaciones/listar':
-        require __DIR__ . '/../src/Presentacion/views/invitaciones/listar.php';
-        break;
 
-    case '/eventos/crearController':
-        require __DIR__ . '/../src/Negocio/EventosController.php';
+    case '/eventos/invitaciones/crear':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Asume que esta ruta es tanto para mostrar el formulario (GET) como para procesar la creación (POST)
+            require __DIR__ . '/../src/Negocio/InvitacionesController.php';
+            $invitacionesController = new InvitacionesController($conexion);
+            // $idEvento = isset($queryParams['id']) ? $queryParams['id'] : null;
+            $invitacionesController->agregarInvitacion();
+        } else {
+            // Mostrar el formulario de creación de eventos
+            require __DIR__ . '/../src/Presentacion/views/eventos/crear.php';
+        }
         break;
 
 

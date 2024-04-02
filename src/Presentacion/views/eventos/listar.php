@@ -142,7 +142,10 @@
                             <button onclick="editarEvento(<?php echo $evento['id']; ?>)">Editar</button>
                             <!-- Botón para eliminar -->
                             <button onclick="eliminarEvento(<?php echo $evento['id']; ?>)">Eliminar</button>
-                            <button onclick="verInvitaciones(<?php echo $evento['id']; ?>)">Ver Invitaciones</button>
+                            <button
+                                onclick="verInvitaciones('<?php echo $evento['id']; ?>','<?php echo $evento['titulo']; ?>',
+                                '<?php echo $evento['direccion']; ?>', '<?php echo $evento['descripcion']; ?>', '<?php echo $evento['fecha']; ?>')">
+                                Ver Invitaciones</button>
 
                         </td>
                         <!-- Agrega más columnas si es necesario -->
@@ -238,14 +241,15 @@
             cerrarModal('editarEventoModal');
         }
 
-        function verInvitaciones(eventoId) {
-            // Redirige al usuario a la página de invitaciones para el evento específico
-            window.location.href = '/eventos/invitaciones?id=' + eventoId;
+        function verInvitaciones(eventoId, nombreEvento, lugar, descripcion, hora) {
+            // Redirige al usuario a la página de invitaciones para el evento específico con información adicional
+            window.location.href = '/eventos/invitaciones?id=' + eventoId + '&titulo=' + encodeURIComponent(nombreEvento) + '&direccion=' + encodeURIComponent(lugar) + '&descripcion=' + encodeURIComponent(nombreEvento) + '&fecha=' + encodeURIComponent(hora);
         }
+
 
         function cerrarModal(modalId) {
             var modal = document.getElementById(modalId);
-            modal.style            .display = 'none';
+            modal.style.display = 'none';
         }
     </script>
 </body>

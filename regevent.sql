@@ -52,22 +52,15 @@ create table evento(
 create table invitacion(
 	id serial primary key,
 	id_usuario int,
-	id_mesa int,
-	id_silla int,
 	id_evento int,
-	codigo_qr varchar,
-	link_confirmacion varchar,
 	nombre_invitado varchar,
 	nro_celular int,
-	imagen varchar,
 	foreign key(id_usuario) references usuario(id),
-	foreign key(id_mesa) references mesa(id),
-	foreign key(id_silla) references silla(id),
 	foreign key(id_evento) references evento(id)
 );
 select * from invitacion
 select * from evento
 drop table mesa
-alter table invitacion drop column imagen
+alter table invitacion drop column link_confirmacion
 insert into usuario values(1, 'j.mario18@hotmail.es', 'jose', 'jose mario')
 insert into invitacion values(1,1,3,'','', 'Pepe Fernandez', 75540)
