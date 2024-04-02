@@ -142,6 +142,7 @@
                             <button onclick="editarEvento(<?php echo $evento['id']; ?>)">Editar</button>
                             <!-- Botón para eliminar -->
                             <button onclick="eliminarEvento(<?php echo $evento['id']; ?>)">Eliminar</button>
+                            <button onclick="verInvitaciones(<?php echo $evento['id']; ?>)">Ver Invitaciones</button>
 
                         </td>
                         <!-- Agrega más columnas si es necesario -->
@@ -233,18 +234,18 @@
             document.getElementById('eliminarEventoModal').style.display = 'block';
         }
 
-
-
         function guardarCambios() {
-            // Lógica para guardar los cambios del evento mediante AJAX
-            // Se omite por simplicidad
-            // Después de guardar los cambios, cerrar la ventana emergente
             cerrarModal('editarEventoModal');
+        }
+
+        function verInvitaciones(eventoId) {
+            // Redirige al usuario a la página de invitaciones para el evento específico
+            window.location.href = '/eventos/invitaciones?id=' + eventoId;
         }
 
         function cerrarModal(modalId) {
             var modal = document.getElementById(modalId);
-            modal.style.display = 'none';
+            modal.style            .display = 'none';
         }
     </script>
 </body>

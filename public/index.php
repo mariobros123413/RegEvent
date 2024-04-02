@@ -5,7 +5,12 @@ require_once '../src/Datos/Database.php';
 $ruta = $_SERVER['REQUEST_URI'];
 $database = Database::getInstance();
 $conexion = $database->getConnection();
-switch ($ruta) {
+$url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$queryString = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+
+// Analiza los parámetros de consulta en un array (si existen)
+parse_str($queryString, $queryParams);
+switch ($url) {
     case '/':
         require __DIR__ . '/../src/Presentacion/views/home.php';
         break;
@@ -57,9 +62,21 @@ switch ($ruta) {
 
 
 
-    case '/invitaciones/crear':
-        require __DIR__ . '/../src/Presentacion/views/invitaciones/crear.php';
+    case '/eventos/invitaciones':
+        require __DIR__ . '/../src/Negocio/InvitacionesController.php';
+        $invitacionesController = new InvitacionesController($conexion);
+
+        // Asegúrate de validar y sanitizar este valor
+        $idEvento = isset($queryParams['id']) ? $queryParams['id'] : null;
+
+        if ($idEvento) {
+            $invitacionesController->listarInvitacionesPorEvento($idEvento);
+        } else {
+            // Manejar el caso en el que no se proporciona el ID del evento
+            echo "ID del evento requerido.";
+        }
         break;
+
     case '/invitaciones/listar':
         require __DIR__ . '/../src/Presentacion/views/invitaciones/listar.php';
         break;

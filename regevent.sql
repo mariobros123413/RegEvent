@@ -7,7 +7,6 @@ create table usuario(
 );
 
 
-select * from evento
 create table asistencia(
 	id serial primary key,
     id_invitacion int,
@@ -66,5 +65,9 @@ create table invitacion(
 	foreign key(id_silla) references silla(id),
 	foreign key(id_evento) references evento(id)
 );
-
+select * from invitacion
+select * from evento
+drop table mesa
+alter table invitacion drop column imagen
 insert into usuario values(1, 'j.mario18@hotmail.es', 'jose', 'jose mario')
+insert into invitacion values(1,1,3,'','', 'Pepe Fernandez', 75540)
