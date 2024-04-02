@@ -36,18 +36,49 @@ class EventosDAO
     }
     public function obtenerTodosEventos()
     {
-        $sql = "SELECT * FROM evento";
+        $sql = "SELECT * FROM evento ORDER BY id ASC";
         $stmt = $this->conexion->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function actualizarEvento($id_evento, $titulo, $direccion, $descripcion, $fecha)
+    {
+        // Preparar la consulta SQL para actualizar el evento en la base de datos
+        $sql = "UPDATE evento SET titulo = ?, direccion = ?, descripcion = ?, fecha = ? WHERE id = ?";
 
-    public function obtenerEventoPorId($id_evento){
-        $sql = "SELECT * FROM evento WHERE id=$id_evento";
+        // Preparar la sentencia
         $stmt = $this->conexion->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+        if (!$stmt) {
+            // No se pudo preparar la sentencia
+            return false;
+        }
+        $stmt->bindValue(1, $titulo);
+        $stmt->bindValue(2, $direccion);
+        $stmt->bindValue(3, $descripcion);
+        $stmt->bindValue(4, $fecha);
+        $stmt->bindValue(5, $id_evento, PDO::PARAM_INT); // Especificar que el id_evento es un entero.
 
-    // Agrega métodos para leer, actualizar y eliminar eventos según sea necesario
+        // Ejecutar la consulta
+        if ($stmt->execute()) {
+            // El evento se actualizó correctamente
+            return true;
+        } else {
+            // Ocurrió un error al actualizar el evento
+            return false;
+        }
+    }
+    public function eliminarEvento($id_evento)
+    {
+        $sql = "DELETE FROM evento WHERE id = ?";
+        $stmt = $this->conexion->prepare($sql);
+        if (!$stmt) {
+            return false;
+        }
+        $stmt->bindValue(1, $id_evento, PDO::PARAM_INT);
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

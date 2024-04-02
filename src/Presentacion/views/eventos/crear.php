@@ -30,7 +30,7 @@
         }
         ?>
         <h1>Crear Evento</h1>
-        <form action='/eventos/crearController' method="post">
+        <form action='/eventos/crear' method="post">
             <div class="form-group">
                 <label for="nombre">Nombre del Evento:</label>
                 <input type="text" id="titulo" name="titulo" required>

@@ -155,7 +155,8 @@
         <div class="modal-content">
             <span class="close" onclick="cerrarModal('editarEventoModal')">&times;</span>
             <h2>Editar Evento</h2>
-            <form id="editarEventoForm">
+            <form id="editarEventoForm" action="/eventos/editar" method="POST">
+                <input type="hidden" id="id_evento" name="id_evento">
                 <div class="form-group">
                     <label for="titulo">Título:</label>
                     <input type="text" id="titulo" name="titulo" required>
@@ -182,6 +183,19 @@
         </div>
     </div>
 
+    <!-- Ventana emergente para eliminar evento -->
+    <div id="eliminarEventoModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal('eliminarEventoModal')">&times;</span>
+            <h2>Eliminar Evento</h2>
+            <form id="eliminarEventoForm" action="/eventos/eliminar" method="POST">
+                <input type="hidden" id="id_evento_eliminar" name="id_evento_eliminar">
+                <p>¿Estás seguro de querer eliminar este evento?</p>
+                <button type="submit">Eliminar</button>
+                <button type="button" onclick="cerrarModal('eliminarEventoModal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
 
 
     <script>
@@ -197,6 +211,7 @@
                 var hora = fechaHora[1];
                 console.log(fecha);
                 // Si se encuentra el evento, completa el formulario de edición con sus datos
+                document.getElementById('id_evento').value = eventoId;
                 document.getElementById('titulo').value = evento.titulo;
                 document.getElementById('direccion').value = evento.direccion;
                 document.getElementById('descripcion').value = evento.descripcion;
@@ -212,9 +227,13 @@
         }
 
         function eliminarEvento(eventoId) {
-            // Lógica para eliminar el evento con el ID correspondiente
-            // Se omite por simplicidad
+            // Setea el ID del evento a eliminar en el formulario de eliminación
+            document.getElementById('id_evento_eliminar').value = eventoId;
+            // Muestra el modal de confirmación para eliminar el evento
+            document.getElementById('eliminarEventoModal').style.display = 'block';
         }
+
+
 
         function guardarCambios() {
             // Lógica para guardar los cambios del evento mediante AJAX

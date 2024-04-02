@@ -10,7 +10,15 @@ switch ($ruta) {
         require __DIR__ . '/../src/Presentacion/views/home.php';
         break;
     case '/eventos/crear':
-        require __DIR__ . '/../src/Presentacion/views/eventos/crear.php';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Asume que esta ruta es tanto para mostrar el formulario (GET) como para procesar la creación (POST)
+            require __DIR__ . '/../src/Negocio/EventosController.php';
+            $eventosController = new EventosController($conexion);
+            $eventosController->crearEvento();
+        } else {
+            // Mostrar el formulario de creación de eventos
+            require __DIR__ . '/../src/Presentacion/views/eventos/crear.php';
+        }
         break;
 
 
@@ -21,12 +29,32 @@ switch ($ruta) {
         require __DIR__ . '/../src/Presentacion/views/eventos/listar.php'; // Incluir la vista
         break;
 
-    case '/eventos/obtener':
+    // Agrega esta ruta para manejar la edición de eventos
+    case '/eventos/editar':
         require __DIR__ . '/../src/Negocio/EventosController.php';
         $eventosController = new EventosController($conexion);
-        $idEvento = isset($_GET['id']) ? $_GET['id'] : null;
-        $eventosController->obtenerEventoPorId($idEvento);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Llama al método editarEvento para procesar los datos del formulario
+            $eventosController->editarEvento();
+        } else {
+            // Si no es una solicitud POST, podrías redirigir al usuario o mostrar un error
+            header("Location: /"); // Por ejemplo, redirige al inicio
+        }
         break;
+
+    case '/eventos/eliminar':
+        require __DIR__ . '/../src/Negocio/EventosController.php';
+        $eventosController = new EventosController($conexion);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Llama al método eliminarEvento para procesar la eliminación del evento
+            $eventosController->eliminarEvento();
+        } else {
+            // Si no es una solicitud POST, podrías redirigir al usuario o mostrar un error
+            header("Location: /"); // Por ejemplo, redirige al inicio
+        }
+        break;
+
+
 
 
     case '/invitaciones/crear':

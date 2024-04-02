@@ -7,7 +7,7 @@ create table usuario(
 );
 
 
-select * from usuario
+select * from evento
 create table asistencia(
 	id serial primary key,
     id_invitacion int,
@@ -42,11 +42,11 @@ create table silla(
 
 create table evento(
 	id serial primary key,
-	id_usuario int,
 	titulo varchar(30),
 	direccion varchar(40),
 	descripcion varchar,
 	fecha varchar(30),
+	id_usuario int,
 	foreign key(id_usuario) references usuario(id)
 );
 
