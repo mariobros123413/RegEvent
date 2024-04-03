@@ -95,6 +95,18 @@ switch ($url) {
         }
         break;
 
+    case '/eventos/invitaciones/eliminar':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Asume que esta ruta es tanto para mostrar el formulario (GET) como para procesar la creación (POST)
+            require __DIR__ . '/../src/Negocio/InvitacionesController.php';
+            $invitacionesController = new InvitacionesController($conexion);
+            // $idEvento = isset($queryParams['id']) ? $queryParams['id'] : null;
+            $invitacionesController->eliminarInvitacion();
+        } else {
+            // Mostrar el formulario de creación de eventos
+            require __DIR__ . '/../src/Presentacion/views/eventos/crear.php';
+        }
+        break;
 
     default:
         http_response_code(404);
@@ -102,3 +114,4 @@ switch ($url) {
         break;
 }
 
+?>

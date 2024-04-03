@@ -61,6 +61,7 @@ create table invitacion(
 select * from invitacion
 select * from evento
 drop table mesa
+delete from invitacion where id > 2
 alter table invitacion drop column link_confirmacion
 insert into usuario values(1, 'j.mario18@hotmail.es', 'jose', 'jose mario')
-insert into invitacion values(1,1,3,'','', 'Pepe Fernandez', 75540)
+insert into invitacion values(2,1,3,'José Jimenez', 75615676)

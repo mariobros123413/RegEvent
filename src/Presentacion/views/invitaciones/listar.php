@@ -128,9 +128,9 @@
                         </td>
                         <td>
                             <button onclick="compartirInvitacion('<?php echo $invitacion['id']; ?>', '<?php echo $invitacion['nro_celular']; ?>',
-                                '<?php echo $invitacion['titulo']; ?>','<?php echo $invitacion['direccion']; ?> ','<?php echo $invitacion['descripcion']; ?>' , '<?php echo $invitacion['fecha']; ?>'
-                                )">Compartir QR</button>
-                            <button onclick="eliminarInvitacion(<?php echo $invitacion['id']; ?>)">Eliminar</button>
+                                '<?php echo $invitacion['titulo']; ?>','<?php echo $invitacion['direccion']; ?> ','<?php echo $invitacion['descripcion']; ?>' , '<?php echo $invitacion['fecha']; ?>',
+                                '<?php echo $invitacion['nombre_invitado']; ?> ' )">Compartir QR</button>
+                            <button onclick="eliminarInvitacion(<?php echo $invitacion['id_invitacion']; ?>)">Eliminar</button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -158,13 +158,26 @@
         </div>
     </div>
 
+    <div id="eliminarInvitacionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal('eliminarInvitacionModal')">&times;</span>
+            <h2>Eliminar Evento</h2>
+            <form id="eliminarInvitacionForm" action="/eventos/invitaciones/eliminar" method="POST">
+                <input type="hidden" id="id_invitacion" name="id_invitacion">
+                <p>¿Estás seguro de querer eliminar esta invitacion?</p>
+                <button type="submit">Eliminar</button>
+                <button type="button" onclick="cerrarModal('eliminarInvitacionModal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
     <script>
-        function compartirInvitacion(invitacionId, numeroCelular, titulo, direccion, descripcion, fecha) {
+        function compartirInvitacion(invitacionId, numeroCelular, titulo, direccion, descripcion, fecha, nombre_invitado) {
             // Genera el código QR
             var qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + encodeURIComponent(invitacionId);
             console.log(descripcion);
             // Formatea el número de celular para WhatsApp (elimina los caracteres no numéricos)
-            var mensaje = "¡Te invito al evento!\n" +
+            var mensaje = "¡Hola " + nombre_invitado + ", estás invitado a mi evento!\n" +
                 "Título: " + titulo + "\n" +
                 "Dirección: " + direccion + "\n" +
                 "Descripción: " + descripcion + "\n" +
@@ -188,6 +201,12 @@
                 // Si no se encuentra el evento, muestra un mensaje de error
                 alert('Evento no encontrado');
             }
+        }
+
+        function eliminarInvitacion(invitacionId) {
+            
+            document.getElementById('id_invitacion').value = invitacionId;
+            document.getElementById('eliminarInvitacionModal').style.display = 'block';
         }
 
         function cerrarModal(modalId) {

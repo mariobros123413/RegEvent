@@ -51,7 +51,7 @@ class InvitacionesController
                 return;
             } else {
                 // Ocurrió un error al crear el evento
-                echo "Hubo un error al crear el evento";
+                echo "Hubo un error al crear la invitaicón";
             }
 
         }
@@ -67,13 +67,17 @@ class InvitacionesController
         }
     }
 
-    public function eliminarInvitacion($id)
+    public function eliminarInvitacion()
     {
+        $id = $_POST["id_invitacion"]; // Asegúrate de obtener el ID del evento
+        echo "idEvento: $id";
         $resultado = $this->invitacionesModel->eliminarInvitacion($id);
         if ($resultado) {
-            // Redirecciona o muestra un mensaje de éxito
+            $_SESSION['invitacion_eliminada'] = true;
+            // Redirigir al usuario a la página de invitaciones con la información del evento almacenada en la sesión
+            header("Location: /eventos/invitaciones?id={$_SESSION['evento_actual']['id']}&titulo={$_SESSION['evento_actual']['titulo']}&direccion={$_SESSION['evento_actual']['direccion']}&descripcion={$_SESSION['evento_actual']['descripcion']}&fecha={$_SESSION['evento_actual']['fecha']}");
         } else {
-            // Maneja el error
+            echo "Hubo un error al eliminar la invitación";
         }
     }
 
