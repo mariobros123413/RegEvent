@@ -16,12 +16,10 @@ switch ($url) {
         break;
     case '/eventos/crear':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Asume que esta ruta es tanto para mostrar el formulario (GET) como para procesar la creación (POST)
             require __DIR__ . '/../src/Negocio/EventosController.php';
             $eventosController = new EventosController($conexion);
             $eventosController->crearEvento();
         } else {
-            // Mostrar el formulario de creación de eventos
             require __DIR__ . '/../src/Presentacion/views/eventos/crear.php';
         }
         break;
@@ -34,16 +32,13 @@ switch ($url) {
         require __DIR__ . '/../src/Presentacion/views/eventos/listar.php'; // Incluir la vista
         break;
 
-    // Agrega esta ruta para manejar la edición de eventos
     case '/eventos/editar':
         require __DIR__ . '/../src/Negocio/EventosController.php';
         $eventosController = new EventosController($conexion);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Llama al método editarEvento para procesar los datos del formulario
             $eventosController->editarEvento();
         } else {
-            // Si no es una solicitud POST, podrías redirigir al usuario o mostrar un error
-            header("Location: /"); // Por ejemplo, redirige al inicio
+            header("Location: /");
         }
         break;
 
@@ -51,11 +46,9 @@ switch ($url) {
         require __DIR__ . '/../src/Negocio/EventosController.php';
         $eventosController = new EventosController($conexion);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Llama al método eliminarEvento para procesar la eliminación del evento
             $eventosController->eliminarEvento();
         } else {
-            // Si no es una solicitud POST, podrías redirigir al usuario o mostrar un error
-            header("Location: /"); // Por ejemplo, redirige al inicio
+            header("Location: /");
         }
         break;
 
@@ -65,8 +58,6 @@ switch ($url) {
     case '/eventos/invitaciones':
         require __DIR__ . '/../src/Negocio/InvitacionesController.php';
         $invitacionesController = new InvitacionesController($conexion);
-
-        // Asegúrate de validar y sanitizar estos valores
         $idEvento = isset($queryParams['id']) ? $queryParams['id'] : null;
         $nombreEvento = isset($queryParams['titulo']) ? $queryParams['titulo'] : null;
         $lugar = isset($queryParams['direccion']) ? $queryParams['direccion'] : null;
@@ -76,7 +67,6 @@ switch ($url) {
         if ($idEvento && $nombreEvento && $lugar && $hora) {
             $invitacionesController->listarInvitacionesPorEvento($idEvento, $nombreEvento, $lugar, $descripcion, $hora);
         } else {
-            // Manejar el caso en el que no se proporcionan todos los datos necesarios
             echo "Datos del evento requeridos.";
         }
         break;
@@ -84,27 +74,56 @@ switch ($url) {
 
     case '/eventos/invitaciones/crear':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Asume que esta ruta es tanto para mostrar el formulario (GET) como para procesar la creación (POST)
             require __DIR__ . '/../src/Negocio/InvitacionesController.php';
             $invitacionesController = new InvitacionesController($conexion);
-            // $idEvento = isset($queryParams['id']) ? $queryParams['id'] : null;
             $invitacionesController->agregarInvitacion();
         } else {
-            // Mostrar el formulario de creación de eventos
             require __DIR__ . '/../src/Presentacion/views/eventos/crear.php';
         }
         break;
 
     case '/eventos/invitaciones/eliminar':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Asume que esta ruta es tanto para mostrar el formulario (GET) como para procesar la creación (POST)
             require __DIR__ . '/../src/Negocio/InvitacionesController.php';
             $invitacionesController = new InvitacionesController($conexion);
-            // $idEvento = isset($queryParams['id']) ? $queryParams['id'] : null;
             $invitacionesController->eliminarInvitacion();
         } else {
-            // Mostrar el formulario de creación de eventos
             require __DIR__ . '/../src/Presentacion/views/eventos/crear.php';
+        }
+        break;
+
+    case '/eventos/asistencia':
+        // Obtener el id_evento de los parámetros de la URL
+        $idEvento = isset($queryParams['id']) ? $queryParams['id'] : null;
+
+        if ($idEvento) {
+            // Si se proporciona el id_evento, redirigir al controlador de asistencia
+            require __DIR__ . '/../src/Negocio/AsistenciaController.php';
+            $asistenciaController = new AsistenciaController($conexion);
+            // $asistenciaController->registrarAsistencia($idEvento);
+            $asistencias = $asistenciaController->obtenerAsistencias($idEvento);
+            require __DIR__ . '/../src/Presentacion/views/Asistencia/registrar.php'; // Incluir la vista
+
+        } else {
+            // Si no se proporciona el id_evento, redirigir a otra página o mostrar un mensaje de error
+            header("Location: /"); // Por ejemplo, redirige al inicio
+        }
+        break;
+
+    case '/eventos/asistencia/registrar':
+        // Obtener el id_evento de los parámetros de la URL
+        $idInvitacion = isset($queryParams['codigoQR']) ? $queryParams['codigoQR'] : null;
+
+        if ($idInvitacion) {
+            // Si se proporciona el id_evento, redirigir al controlador de asistencia
+            require __DIR__ . '/../src/Negocio/AsistenciaController.php';
+            $asistenciaController = new AsistenciaController($conexion);
+            $asistenciaController->registrarAsistencia($idInvitacion);
+
+
+        } else {
+            // Si no se proporciona el id_evento, redirigir a otra página o mostrar un mensaje de error
+            header("Location: /"); // Por ejemplo, redirige al inicio
         }
         break;
 

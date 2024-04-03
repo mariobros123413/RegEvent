@@ -127,7 +127,7 @@
                             <?php echo ($invitacion['nro_celular']); ?>
                         </td>
                         <td>
-                            <button onclick="compartirInvitacion('<?php echo $invitacion['id']; ?>', '<?php echo $invitacion['nro_celular']; ?>',
+                            <button onclick="compartirInvitacion('<?php echo $invitacion['id_invitacion']; ?>', '<?php echo $invitacion['nro_celular']; ?>',
                                 '<?php echo $invitacion['titulo']; ?>','<?php echo $invitacion['direccion']; ?> ','<?php echo $invitacion['descripcion']; ?>' , '<?php echo $invitacion['fecha']; ?>',
                                 '<?php echo $invitacion['nombre_invitado']; ?> ' )">Compartir QR</button>
                             <button onclick="eliminarInvitacion(<?php echo $invitacion['id_invitacion']; ?>)">Eliminar</button>

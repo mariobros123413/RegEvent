@@ -63,8 +63,6 @@ class InvitacionesDAO
     // Método para eliminar una invitación
     public function eliminarInvitacion($id)
     {
-        echo "idEvento: $id <br>";
-
         $sql = "DELETE FROM invitacion WHERE id = ?";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) {

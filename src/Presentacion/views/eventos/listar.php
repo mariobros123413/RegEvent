@@ -145,8 +145,11 @@
                             <button
                                 onclick="verInvitaciones('<?php echo $evento['id']; ?>','<?php echo $evento['titulo']; ?>',
                                 '<?php echo $evento['direccion']; ?>', '<?php echo $evento['descripcion']; ?>', '<?php echo $evento['fecha']; ?>')">
-                                Ver Invitaciones</button>
-
+                                Ver Invitaciones
+                            </button>
+                            <button onclick="registrarAsistencia(<?php echo $evento['id']; ?>)">Registrar
+                                Asistencia
+                            </button>
                         </td>
                         <!-- Agrega más columnas si es necesario -->
                     </tr>
@@ -246,6 +249,9 @@
             window.location.href = '/eventos/invitaciones?id=' + eventoId + '&titulo=' + encodeURIComponent(nombreEvento) + '&direccion=' + encodeURIComponent(lugar) + '&descripcion=' + encodeURIComponent(nombreEvento) + '&fecha=' + encodeURIComponent(hora);
         }
 
+        function registrarAsistencia(eventoId) {
+            window.location.href = '/eventos/asistencia?id=' + eventoId;
+        }
 
         function cerrarModal(modalId) {
             var modal = document.getElementById(modalId);

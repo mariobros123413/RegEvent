@@ -14,10 +14,10 @@ create table asistencia(
 );
 
 ALTER TABLE asistencia
-ADD COLUMN id_invitacion INT;
+ADD COLUMN id_evento INT;
 -- También puedes agregar la restricción de la clave foránea en este paso si lo deseas
 ALTER TABLE asistencia
-ADD CONSTRAINT id_invitacion FOREIGN KEY (id_invitacion) REFERENCES invitacion(id);
+ADD CONSTRAINT id_evento FOREIGN KEY (id_evento) REFERENCES evento(id);
 
 
 create table mesa(
@@ -58,10 +58,12 @@ create table invitacion(
 	foreign key(id_usuario) references usuario(id),
 	foreign key(id_evento) references evento(id)
 );
-select * from invitacion
 select * from evento
+select * from asistencia
+select * from invitacion
 drop table mesa
 delete from invitacion where id > 2
 alter table invitacion drop column link_confirmacion
 insert into usuario values(1, 'j.mario18@hotmail.es', 'jose', 'jose mario')
 insert into invitacion values(2,1,3,'José Jimenez', 75615676)
+insert into asistencia values(1,'2024-03-30 19:05', 1, 3)
