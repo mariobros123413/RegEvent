@@ -19,19 +19,20 @@ class AsistenciaDAO
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function registrarAsistencia($idInvitacion)
+    public function registrarAsistencia($idInvitacion, $idEvento)
     {
         // Obtener la fecha y hora actual
         $fechaHora = date("Y-m-d H:i:s");
 
         // Preparar la consulta SQL para insertar la asistencia en la base de datos
-        $sql = "INSERT INTO asistencia (fecha_llegada, id_invitacion) VALUES (?, ?)";
+        $sql = "INSERT INTO asistencia (fecha_llegada, id_invitacion, id_evento) VALUES (?, ?,?)";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) {
             return false;
         }
         $stmt->bindValue(1, $fechaHora, PDO::PARAM_STR);
         $stmt->bindValue(2, $idInvitacion, PDO::PARAM_INT);
+        $stmt->bindValue(3, $idEvento, PDO::PARAM_INT);
 
         // Ejecutar la consulta
         if ($stmt->execute()) {
@@ -52,7 +53,6 @@ class AsistenciaDAO
 
             // Obtener el resultado de la consulta
             $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-
             // Verificar si la asistencia ya existe
             if ($resultado['total'] > 0) {
                 return true; // La asistencia ya existe

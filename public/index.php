@@ -112,19 +112,12 @@ switch ($url) {
 
     case '/eventos/asistencia/registrar':
         // Obtener el id_evento de los parámetros de la URL
-        $idInvitacion = isset($queryParams['codigoQR']) ? $queryParams['codigoQR'] : null;
-
-        if ($idInvitacion) {
             // Si se proporciona el id_evento, redirigir al controlador de asistencia
             require __DIR__ . '/../src/Negocio/AsistenciaController.php';
             $asistenciaController = new AsistenciaController($conexion);
-            $asistenciaController->registrarAsistencia($idInvitacion);
+            $asistenciaController->registrarAsistencia();
 
 
-        } else {
-            // Si no se proporciona el id_evento, redirigir a otra página o mostrar un mensaje de error
-            header("Location: /"); // Por ejemplo, redirige al inicio
-        }
         break;
 
     default:

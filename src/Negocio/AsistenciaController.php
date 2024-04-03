@@ -16,18 +16,20 @@ class AsistenciaController
         $this->asistenciaModel = new AsistenciaDAO($conexion);
     }
 
-    public function registrarAsistencia($idInvitacion)
+    public function registrarAsistencia()
     {
         // Lógica para registrar la asistencia
         // Aquí podrías insertar el registro de asistencia en la base de datos utilizando el ID de la invitación
+        $idInvitacion = $_POST["codigoQR"];
+        $idEvento = $_POST["id"];
+
 
         // Ejemplo de cómo podrías llamar al método correspondiente en la capa de datos
         if ($this->asistenciaModel->verificarAsistenciaExistente($idInvitacion)) {
             // Si la invitación ya existe, emitir un mensaje o realizar alguna acción apropiada
-            echo "La asistencia ya ha sido registrada previamente.";
             return false;
         }
-        $resultado = $this->asistenciaModel->registrarAsistencia($idInvitacion);
+        $resultado = $this->asistenciaModel->registrarAsistencia($idInvitacion, $idEvento);
 
         // Verificar si la asistencia se registró correctamente
         if ($resultado) {
