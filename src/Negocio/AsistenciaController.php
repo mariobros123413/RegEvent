@@ -29,16 +29,11 @@ class AsistenciaController
             // Si la invitación ya existe, emitir un mensaje o realizar alguna acción apropiada
             return false;
         }
-        $resultado = $this->asistenciaModel->registrarAsistencia($idInvitacion, $idEvento);
+        $this->asistenciaModel->registrarAsistencia($idInvitacion, $idEvento);
+        echo json_encode(['success' => true, 'message' => 'Asistencia registrada con éxito.']);
+        exit;
+        
 
-        // Verificar si la asistencia se registró correctamente
-        if ($resultado) {
-            // Aquí podrías realizar cualquier otra acción necesaria después de registrar la asistencia, como actualizar la vista o redirigir al usuario
-            return true;
-        } else {
-            // Manejar el caso en que no se pueda registrar la asistencia
-            return false;
-        }
     }
 
     public function obtenerAsistencias($idEvento)
@@ -52,5 +47,19 @@ class AsistenciaController
             echo "No se han encontrado eventos.";
         }
     }
+
+    public function emitirEventoSSE($asistencia)
+    {
+        // Configurar el encabezado para eventos SSE
+        header('Content-Type: text/event-stream');
+        header('Cache-Control: no-cache');
+
+        // Construir el mensaje SSE
+        echo "event: asistencia\n";
+        echo "data: " . json_encode($this->obtenerAsistencias($asistencia)) . "\n\n";
+        flush(); // Forzar el envío del evento
+    }
+
+
 }
 ?>

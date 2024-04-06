@@ -112,12 +112,22 @@ switch ($url) {
 
     case '/eventos/asistencia/registrar':
         // Obtener el id_evento de los parámetros de la URL
-            // Si se proporciona el id_evento, redirigir al controlador de asistencia
+        // Si se proporciona el id_evento, redirigir al controlador de asistencia
+        require __DIR__ . '/../src/Negocio/AsistenciaController.php';
+        $asistenciaController = new AsistenciaController($conexion);
+        $asistenciaController->registrarAsistencia();
+        break;
+
+    // En index.php, agrega una nueva ruta para SSE
+    case '/eventos/asistencia/sse':
+        $idEvento = isset($queryParams['id']) ? $queryParams['id'] : null;
+        if ($idEvento) {
             require __DIR__ . '/../src/Negocio/AsistenciaController.php';
             $asistenciaController = new AsistenciaController($conexion);
-            $asistenciaController->registrarAsistencia();
-
-
+            $asistenciaController->emitirEventoSSE($idEvento); // Este método debe ser creado
+        } else {
+            echo "ID del evento requerido.";
+        }
         break;
 
     default:

@@ -37,7 +37,7 @@
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>ID Invitación</th>
                     <th>Hora de Asistencia</th>
                     <th>Nombre</th>
                     <th>Nro Celular</th>
@@ -49,7 +49,7 @@
                 <?php foreach ($asistencias as $asistencia): ?>
                     <tr>
                         <td>
-                            <?php echo $asistencia['id']; ?>
+                            <?php echo $asistencia['idInvitacion']; ?>
                         </td>
                         <td>
                             <?php echo $asistencia['fecha_llegada']; ?>
@@ -96,11 +96,14 @@
                             fps: 100,    // Optional, frame per seconds for qr code scanning
                         },
                         (decodedText, decodedResult) => {
+                            // Asignar valores detectados a los campos del formulario
                             document.getElementById('codigoQR').value = decodedText;
                             const urlParams = new URLSearchParams(window.location.search);
                             const eventId = urlParams.get('id');
                             document.getElementById('id').value = eventId;
-                            document.getElementById('asistencia-form').submit();
+
+                            // Prevenir el envío tradicional del formulario
+                            enviarDatosAsistencia(decodedText, eventId);
                         },
                         (errorMessage) => {
                             //
@@ -114,8 +117,50 @@
                 // handle err
             });
         }
+        function enviarDatosAsistencia(codigoQR, idEvento) {
+            fetch('/eventos/asistencia/registrar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `codigoQR=${codigoQR}&id=${idEvento}`
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Asistencia registrada:', data);
+                })
+                .catch((error) => {
+                    console.error('Error al registrar la asistencia:', error);
+                });
+        }
         leerCodigoQR();
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const idEvento = urlParams.get('id');
+            const url = '/eventos/asistencia/sse?id=' + idEvento;
+            const eventSource = new EventSource(url);
+
+            eventSource.addEventListener('asistencia', function (e) {
+                const asistencias = JSON.parse(e.data);
+                console.log(asistencias); 
+                const tbody = document.querySelector('table > tbody');
+                tbody.innerHTML = '';
+                asistencias.forEach(asistencia => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                <td>${asistencia.id}</td>
+                <td>${asistencia.fecha_llegada}</td>
+                <td>${asistencia.nombre_invitado}</td>
+                <td>${asistencia.nro_celular}</td>
+            `;
+                    tbody.appendChild(tr);
+                });
+            }, false);
+        });
+    </script>
+
 </body>
 
 </html>

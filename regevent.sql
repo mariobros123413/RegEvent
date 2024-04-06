@@ -62,8 +62,8 @@ select * from evento
 select * from asistencia
 select * from invitacion
 drop table mesa
-delete from invitacion where id > 2
+delete from asistencia where id= 5
 alter table invitacion drop column link_confirmacion
 insert into usuario values(1, 'j.mario18@hotmail.es', 'jose', 'jose mario')
 insert into invitacion values(2,1,3,'José Jimenez', 75615676)
-insert into asistencia values(1,'2024-03-30 19:05', 1, 3)
+insert into asistencia values(2,'2024-03-30 19:05',2, 3)
