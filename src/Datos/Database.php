@@ -5,8 +5,6 @@ class Database {
     private $connection;
     
     private function __construct() {
-        // Establecer conexión a la base de datos aquí
-        // Nota: Este es solo un ejemplo, deberás adaptarlo a tu configuración
         $host = 'localhost';
         $port = '5432';
         $database = 'regevent';
@@ -33,8 +31,6 @@ class Database {
         return $this->connection;
     }
 }
-
-// Para obtener la conexión en cualquier parte de tu aplicación
 $database = Database::getInstance();
-$conn = $database->getConnection(); // continuar con la instancia
+$conn = $database->getConnection();
 ?>

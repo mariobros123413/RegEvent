@@ -71,6 +71,7 @@
         }
 
         input[type="text"],
+        input[type="number"],
         input[type="date"],
         input[type="time"] {
             padding: 10px;
@@ -142,7 +143,7 @@
     <div id="crearInvitacionModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="cerrarModal('crearInvitacionModal')">&times;</span>
-            <h2>Crear Invitación</h2>
+            <h2>Formulario para Crear Invitación</h2>
             <form id="crearInvitacionForm" action="/eventos/invitaciones/crear" method="POST">
                 <input type="hidden" id="id_evento" name="id_evento" value="<?php echo $_GET['id']; ?>">
                 <div class="form-group">
@@ -154,7 +155,7 @@
                     <input type="number" id="nro_celular" name="nro_celular" required>
                 </div>
                 <!-- Agrega más campos según sea necesario -->
-                <button type="submit">Guardar Cambios</button>
+                <button type="submit">Crear Invitación</button>
             </form>
         </div>
     </div>
@@ -162,7 +163,7 @@
     <div id="eliminarInvitacionModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="cerrarModal('eliminarInvitacionModal')">&times;</span>
-            <h2>Eliminar Evento</h2>
+            <h2>Eliminar Invitación</h2>
             <form id="eliminarInvitacionForm" action="/eventos/invitaciones/eliminar" method="POST">
                 <input type="hidden" id="id_invitacion" name="id_invitacion">
                 <p>¿Estás seguro de querer eliminar esta invitacion?</p>

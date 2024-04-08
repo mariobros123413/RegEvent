@@ -1,5 +1,4 @@
 <?php
-// AsistenciaController.php
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -18,39 +17,41 @@ class AsistenciaController
 
     public function registrarAsistencia()
     {
-        // Lógica para registrar la asistencia
-        // Aquí podrías insertar el registro de asistencia en la base de datos utilizando el ID de la invitación
         $idInvitacion = $_POST["codigoQR"];
         $idEvento = $_POST["id"];
-
-
-        // Ejemplo de cómo podrías llamar al método correspondiente en la capa de datos
-        if ($this->asistenciaModel->verificarAsistenciaExistente($idInvitacion)) {
-            // Si la invitación ya existe, emitir un mensaje o realizar alguna acción apropiada
-            return false;
+        if ($this->verificarEventoInvitacion($idInvitacion, $idEvento)) {
+            if ($this->verificarAsistenciaExistente($idInvitacion)) {
+                return false;
+            }
+            $this->asistenciaModel->registrarAsistencia($idInvitacion);
+            echo json_encode(['success' => true, 'message' => 'Asistencia registrada con éxito.']);
+            exit;
         }
-        $this->asistenciaModel->registrarAsistencia($idInvitacion, $idEvento);
-        echo json_encode(['success' => true, 'message' => 'Asistencia registrada con éxito.']);
-        exit;
-        
 
     }
 
     public function obtenerAsistencias($idEvento)
     {
         if ($idEvento) {
-            // Si se obtienen eventos correctamente, incluir la vista para mostrar los eventos
             $asistencias = $this->asistenciaModel->obtenerAsistencias($idEvento);
             return $asistencias;
         } else {
-            // Si no se obtienen eventos, puedes mostrar un mensaje de error o redirigir a otra página
             echo "No se han encontrado eventos.";
         }
     }
 
+    public function verificarEventoInvitacion($idInvitacion, $idEvento)
+    {
+        $resultado = $this->asistenciaModel->verificarEventoASistencia($idInvitacion, $idEvento);
+        if ($resultado['total'] > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     public function emitirEventoSSE($asistencia)
     {
-        // Configurar el encabezado para eventos SSE
+        // Encabezado para eventos SSE
         header('Content-Type: text/event-stream');
         header('Cache-Control: no-cache');
 
@@ -60,6 +61,14 @@ class AsistenciaController
         flush(); // Forzar el envío del evento
     }
 
-
+    public function verificarAsistenciaExistente($idInvitacion)
+    {
+        $resultado = $this->asistenciaModel->cantAsistencias($idInvitacion);
+        if ($resultado['total'] > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 ?>
