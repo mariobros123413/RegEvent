@@ -22,7 +22,7 @@ class InvitacionesDAO
         }
     }
 
-    public function agregarInvitacion($idEvento, $nombreInvitado, $nroCelular)
+    public function agregarInvitacion($idEvento, $nombreInvitado, $nroCelular)//agregar idMesa
     {
         $sql = "INSERT INTO invitacion (id_evento, nombre_invitado, nro_celular) VALUES (?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);
@@ -36,16 +36,6 @@ class InvitacionesDAO
         } else {
             return false;
         }
-    }
-
-    public function actualizarInvitacion($id, $nombreInvitado, $emailInvitado)
-    {
-        $sql = "UPDATE invitacion SET nombre_invitado = ?, email_invitado = ? WHERE id = ?";
-        $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("ssi", $nombreInvitado, $emailInvitado, $id);
-        $resultado = $stmt->execute();
-        $stmt->close();
-        return $resultado;
     }
     public function eliminarInvitacion($id)
     {

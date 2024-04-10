@@ -15,16 +15,15 @@ class AsistenciaController
         $this->asistenciaModel = new AsistenciaDAO($conexion);
     }
 
-    public function registrarAsistencia()
+    public function registrarAsistencia($idInvitacion, $idEvento)
     {
-        $idInvitacion = $_POST["codigoQR"];
-        $idEvento = $_POST["id"];
         if ($this->verificarEventoInvitacion($idInvitacion, $idEvento)) {
             if ($this->verificarAsistenciaExistente($idInvitacion)) {
                 return false;
             }
             $this->asistenciaModel->registrarAsistencia($idInvitacion);
             echo json_encode(['success' => true, 'message' => 'Asistencia registrada con éxito.']);
+            
             exit;
         }
 
@@ -42,14 +41,14 @@ class AsistenciaController
 
     public function verificarEventoInvitacion($idInvitacion, $idEvento)
     {
-        $resultado = $this->asistenciaModel->verificarEventoASistencia($idInvitacion, $idEvento);
+        $resultado = $this->asistenciaModel->verificarEventoInvitacion($idInvitacion, $idEvento);
         if ($resultado['total'] > 0) {
             return true;
         } else {
             return false;
         }
     }
-    public function emitirEventoSSE($asistencia)
+    public function emitirEventoSSE($idEvento)
     {
         // Encabezado para eventos SSE
         header('Content-Type: text/event-stream');
@@ -57,7 +56,7 @@ class AsistenciaController
 
         // Construir el mensaje SSE
         echo "event: asistencia\n";
-        echo "data: " . json_encode($this->obtenerAsistencias($asistencia)) . "\n\n";
+        echo "data: " . json_encode($this->obtenerAsistencias($idEvento)) . "\n\n";
         flush(); // Forzar el envío del evento
     }
 

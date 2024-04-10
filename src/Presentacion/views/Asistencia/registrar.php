@@ -22,11 +22,12 @@
     <script>
         var eventos = <?php echo json_encode($asistencias); ?>;
     </script>
-    <h1>Registro de Asistencia</h1>
-    <div id="reader" style="display: flex; justify-content: center; align-items: center;  height: 30%;">
+
+
+    <div class="container" id="reader"
+        style="display: flex; justify-content: center; align-items: center;  height: 30%;">
         <video id="qr-video" width="40%" height="30%" autoplay></video>
     </div>
-
     <form id="asistencia-form" action="/eventos/asistencia/registrar" method="POST" style="display: none;">
         <input type="hidden" id="codigoQR" name="codigoQR">
         <input type="hidden" id="id" name="id">
@@ -144,7 +145,7 @@
 
             eventSource.addEventListener('asistencia', function (e) {
                 const asistencias = JSON.parse(e.data);
-                console.log(asistencias); 
+                console.log(asistencias);
                 const tbody = document.querySelector('table > tbody');
                 tbody.innerHTML = '';
                 asistencias.forEach(asistencia => {

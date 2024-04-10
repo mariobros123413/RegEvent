@@ -26,36 +26,34 @@ class InvitacionesController
             'fecha' => $_GET['fecha']
         ];
         require_once __DIR__ . '/../Presentacion/views/invitaciones/listar.php';
+        //added
+        if ($invitaciones) 
+            return $invitaciones;
     }
 
 
-    public function agregarInvitacion()
+    public function agregarInvitacion($id_evento, $nombre_invitado, $nro_celular)
     {
-        $id_evento = $_POST["id_evento"];
-        $nombre_invitado = $_POST["nombre"];
-        $nro_celular = $_POST["nro_celular"];
-
 
         // Llamar al método de la capa de negocio para crear el evento
-        $resultado = $this->invitacionesModel->agregarInvitacion($id_evento, $nombre_invitado, $nro_celular);//id_usuario_organizador
+        $resultado = $this->invitacionesModel->agregarInvitacion($id_evento, $nombre_invitado, $nro_celular);//agregar id_mesa
 
         if ($resultado) {
             $_SESSION['invitacion_creada'] = true;
             header("Location: /eventos/invitaciones?id={$_SESSION['evento_actual']['id']}&titulo={$_SESSION['evento_actual']['titulo']}&direccion={$_SESSION['evento_actual']['direccion']}&descripcion={$_SESSION['evento_actual']['descripcion']}&fecha={$_SESSION['evento_actual']['fecha']}");
-            return;
+            return true;
         } else {
             echo "Hubo un error al crear la invitaicón";
         }
     }
 
-    public function eliminarInvitacion()
+    public function eliminarInvitacion($id) //aumentar idMesa y aumentar silla a la mesa
     {
-        $id = $_POST["id_invitacion"];
-        echo "idEvento: $id";
         $resultado = $this->invitacionesModel->eliminarInvitacion($id);
         if ($resultado) {
             $_SESSION['invitacion_eliminada'] = true;
             header("Location: /eventos/invitaciones?id={$_SESSION['evento_actual']['id']}&titulo={$_SESSION['evento_actual']['titulo']}&direccion={$_SESSION['evento_actual']['direccion']}&descripcion={$_SESSION['evento_actual']['descripcion']}&fecha={$_SESSION['evento_actual']['fecha']}");
+            return true;
         } else {
             echo "Hubo un error al eliminar la invitación";
         }

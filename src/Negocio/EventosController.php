@@ -16,22 +16,16 @@ class EventosController
         $this->eventosService = new EventosDAO($conexion);
     }
 
-    public function crearEvento()
+    public function crearEvento($titulo, $direccion, $descripcion, $fecha, $hora)
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Obtener los datos del formulario
-            $titulo = $_POST["titulo"];
-            $direccion = $_POST["direccion"];
-            $descripcion = $_POST["descripcion"];
-            $fecha = $_POST["fecha"];
-            $hora = $_POST["hora"];
 
-            $resultado = $this->eventosService->crearEvento( $titulo, $direccion, $descripcion, $fecha . ' ' . $hora);
+            $resultado = $this->eventosService->crearEvento($titulo, $direccion, $descripcion, $fecha . ' ' . $hora);
 
             if ($resultado) {
                 $_SESSION['evento_creado'] = true;
                 header("Location: /eventos/crear");
-                return;
+                return true;
             } else {
                 echo "Hubo un error al crear el evento";
             }
@@ -49,16 +43,8 @@ class EventosController
         }
     }
 
-    public function editarEvento()
+    public function editarEvento($id_evento, $titulo, $direccion, $descripcion, $fecha, $hora)
     {
-        //recojo los datos POST del FORM
-        $id_evento = $_POST["id_evento"];
-        $titulo = $_POST["titulo"];
-        $direccion = $_POST["direccion"];
-        $descripcion = $_POST["descripcion"];
-        $fecha = $_POST["fecha"];
-        $hora = $_POST["hora"];
-
         $fechaHora = $fecha . ' ' . $hora;
 
         // Llamar al método de la capa de negocio para actualizar el evento
@@ -68,20 +54,21 @@ class EventosController
         if ($resultado) {
             $_SESSION['evento_actualizado'] = true;
             header("Location: /eventos/listar"); // Redirigir a la página de listar eventos
+            return true;
         } else {
             echo "Hubo un error al actualizar el evento";
         }
 
     }
-    public function eliminarEvento()
+    public function eliminarEvento($id_evento)
     {
         if (isset($_POST['id_evento_eliminar'])) {
-            $id_evento = $_POST['id_evento_eliminar'];
 
             $resultado = $this->eventosService->eliminarEvento($id_evento);
             if ($resultado) {
                 $_SESSION['evento_eliminado'] = true;
                 header("Location: /eventos/listar"); // Redirigir a la página de listar eventos
+                return true;
             } else {
                 echo "Hubo un error al eliminar el evento";
             }

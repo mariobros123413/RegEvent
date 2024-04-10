@@ -13,12 +13,17 @@ switch ($url) {
     case '/':
         require __DIR__ . '/../src/Presentacion/views/home.php';
         break;
-        
+
     case '/eventos/crear':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             require __DIR__ . '/../src/Negocio/EventosController.php';
             $eventosController = new EventosController($conexion);
-            $eventosController->crearEvento();
+            $titulo = $_POST["titulo"];
+            $direccion = $_POST["direccion"];
+            $descripcion = $_POST["descripcion"];
+            $fecha = $_POST["fecha"];
+            $hora = $_POST["hora"];
+            $eventosController->crearEvento($titulo, $direccion, $descripcion, $fecha, $hora);
         } else {
             require __DIR__ . '/../src/Presentacion/views/eventos/crear.php';
         }
@@ -35,7 +40,13 @@ switch ($url) {
         require __DIR__ . '/../src/Negocio/EventosController.php';
         $eventosController = new EventosController($conexion);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $eventosController->editarEvento();
+            $id_evento = $_POST["id_evento"];
+            $titulo = $_POST["titulo"];
+            $direccion = $_POST["direccion"];
+            $descripcion = $_POST["descripcion"];
+            $fecha = $_POST["fecha"];
+            $hora = $_POST["hora"];
+            $eventosController->editarEvento($id_evento, $titulo, $direccion, $descripcion, $fecha, $hora);
         } else {
             header("Location: /");
         }
@@ -45,7 +56,8 @@ switch ($url) {
         require __DIR__ . '/../src/Negocio/EventosController.php';
         $eventosController = new EventosController($conexion);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $eventosController->eliminarEvento();
+            $id_evento = $_POST['id_evento_eliminar'];
+            $eventosController->eliminarEvento($id_evento);
         } else {
             header("Location: /");
         }
@@ -71,7 +83,10 @@ switch ($url) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             require __DIR__ . '/../src/Negocio/InvitacionesController.php';
             $invitacionesController = new InvitacionesController($conexion);
-            $invitacionesController->agregarInvitacion();
+            $id_evento = $_POST["id_evento"];
+            $nombre_invitado = $_POST["nombre"];
+            $nro_celular = $_POST["nro_celular"];
+            $invitacionesController->agregarInvitacion($id_evento, $nombre_invitado, $nro_celular);
         } else {
             require __DIR__ . '/../src/Presentacion/views/eventos/crear.php';
         }
@@ -81,7 +96,8 @@ switch ($url) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             require __DIR__ . '/../src/Negocio/InvitacionesController.php';
             $invitacionesController = new InvitacionesController($conexion);
-            $invitacionesController->eliminarInvitacion();
+            $id = $_POST["id_invitacion"];
+            $invitacionesController->eliminarInvitacion($id);
         } else {
             require __DIR__ . '/../src/Presentacion/views/eventos/crear.php';
         }
@@ -103,7 +119,9 @@ switch ($url) {
     case '/eventos/asistencia/registrar':
         require __DIR__ . '/../src/Negocio/AsistenciaController.php';
         $asistenciaController = new AsistenciaController($conexion);
-        $asistenciaController->registrarAsistencia();
+        $idInvitacion = $_POST["codigoQR"];
+        $idEvento = $_POST["id"];
+        $asistenciaController->registrarAsistencia($idInvitacion, $idEvento);
         break;
 
     case '/eventos/asistencia/sse':

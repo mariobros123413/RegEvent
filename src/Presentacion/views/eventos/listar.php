@@ -106,6 +106,32 @@
     </script>
 
     <div class="container">
+        <?php
+        // Verificar si el evento se creó correctamente y mostrar un mensaje
+        if (isset($_SESSION['evento_actualizado']) && $_SESSION['evento_actualizado'] === true) {
+            // Eliminar la variable de sesión para que el mensaje no aparezca en futuras visitas a la página
+            unset($_SESSION['evento_actualizado']);
+            ?>
+            <script>
+                // Muestra una ventana emergente con el mensaje
+                alert("El evento se actualizó correctamente.");
+            </script>
+            <?php
+        }
+        ?>
+        <?php
+        // Verificar si el evento se creó correctamente y mostrar un mensaje
+        if (isset($_SESSION['evento_eliminado']) && $_SESSION['evento_eliminado'] === true) {
+            // Eliminar la variable de sesión para que el mensaje no aparezca en futuras visitas a la página
+            unset($_SESSION['evento_eliminado']);
+            ?>
+            <script>
+                // Muestra una ventana emergente con el mensaje
+                alert("El evento se eliminó correctamente.");
+            </script>
+            <?php
+        }
+        ?>
         <h1>Listado de Eventos</h1>
         <table>
             <thead>

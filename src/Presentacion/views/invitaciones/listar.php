@@ -103,6 +103,32 @@
         session_start();
     ?>
     <div class="container">
+        <?php
+        // Verificar si el evento se creó correctamente y mostrar un mensaje
+        if (isset($_SESSION['invitacion_creada']) && $_SESSION['invitacion_creada'] === true) {
+            // Eliminar la variable de sesión para que el mensaje no aparezca en futuras visitas a la página
+            unset($_SESSION['invitacion_creada']);
+            ?>
+            <script>
+                // Muestra una ventana emergente con el mensaje
+                alert("La invitación se creó correctamente.");
+            </script>
+            <?php
+        }
+        ?>
+        <?php
+        // Verificar si el evento se creó correctamente y mostrar un mensaje
+        if (isset($_SESSION['invitacion_eliminada']) && $_SESSION['invitacion_eliminada'] === true) {
+            // Eliminar la variable de sesión para que el mensaje no aparezca en futuras visitas a la página
+            unset($_SESSION['invitacion_eliminada']);
+            ?>
+            <script>
+                // Muestra una ventana emergente con el mensaje
+                alert("La invitación se eliminó correctamente.");
+            </script>
+            <?php
+        }
+        ?>
         <h2>Invitaciones del Evento</h2>
         <button onclick="crearInvitacion(<?php echo $_GET['id']; ?>)">Crear Invitación</button>
         <!-- Reemplaza rutaParaCrearInvitacion con tu ruta correcta -->
@@ -174,7 +200,7 @@
     </div>
 
     <script>
-        function compartirInvitacion(invitacionId, numeroCelular, titulo, direccion, descripcion, fecha, nombre_invitado) {
+        function compartirInvitacion(invitacionId, numeroCelular, titulo, direccion, descripcion, fecha, nombre_invitado) { //aumentar mesa_asignada, y enviar al whatsapp
             // Genera el código QR
             var qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + encodeURIComponent(invitacionId);
             console.log(descripcion);

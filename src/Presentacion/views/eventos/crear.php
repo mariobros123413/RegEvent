@@ -11,8 +11,8 @@
     <?php
     if (session_status() == PHP_SESSION_NONE)
         session_start();
-    
-    
+
+
     include '../src/Presentacion/views/topbar.php'; ?>
 
     <div class="container">
@@ -30,7 +30,7 @@
         }
         ?>
         <h1>Crear Evento</h1>
-        <form action='/eventos/crear' method="post">
+        <form id="crearEventoForm" action='/eventos/crear' method="post">
             <div class="form-group">
                 <label for="nombre">Nombre del Evento:</label>
                 <input type="text" id="titulo" name="titulo" required>
@@ -52,8 +52,29 @@
                 <input type="time" id="hora" name="hora" required>
             </div>
             <!-- Agrega más campos según sea necesario -->
-            <button type="submit" name="enviar">Crear Evento</button>
+            <button type="button" onclick="crearEvento()">Crear Evento</button>
         </form>
+    </div>
+
+    <script>
+        function crearEvento() {
+            // Ejemplo de validación
+            const titulo = document.getElementById('titulo').value;
+            const direccion = document.getElementById('direccion').value;
+            const descripcion = document.getElementById('descripcion').value;
+            const fecha = document.getElementById('fecha').value;
+            const hora = document.getElementById('hora').value;
+
+            // Aquí puedes añadir más validaciones según sea necesario
+            if (titulo === "" || direccion === "" || descripcion === "" || fecha === "" || hora === "") {
+                alert("Por favor, completa todos los campos.");
+                return false;
+            }
+
+            // Si todo está bien, enviar el formulario
+            document.getElementById('crearEventoForm').submit();
+        }
+    </script>
     </div>
 
 

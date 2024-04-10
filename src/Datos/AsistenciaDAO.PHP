@@ -56,7 +56,7 @@ class AsistenciaDAO
         }
     }
 
-    public function verificarEventoASistencia($idInvitacion, $idEvento)
+    public function verificarEventoInvitacion($idInvitacion, $idEvento)
     {
         try {
             $sql = "SELECT COUNT(*) AS total FROM invitacion, evento WHERE evento.id = :idEvento AND invitacion.id= :idInvitacion AND invitacion.id_evento = evento.id";
