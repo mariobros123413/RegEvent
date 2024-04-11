@@ -44,8 +44,11 @@ create table asistencia(
 	ON UPDATE CASCADE
 	ON DELETE CASCADE
 );
-
-
+delete from mesa where id>2
+SELECT COUNT(*) AS TOTAL FROM invitacion, mesa WHERE invitacion.id_evento = 2 AND invitacion.mesa_asignada = mesa.id
+SELECT COUNT(*) AS TOTAL FROM invitacion WHERE id_evento = 2
+SELECT COUNT(*) AS TOTAL FROM invitacion, mesa WHERE invitacion.mesa_asignada = mesa.id AND mesa.id = 2
+alter table silla drop column nro
 select * from evento
 select * from mesa
 select * from silla
@@ -61,12 +64,15 @@ insert into invitacion values(2,1,3,'José Jimenez', 75615676)
 insert into asistencia values(2,'2024-03-30 19:05',2, 3)
 DELETE FROM asistencia, invitacion, evento WHERE evento.id = 1 AND evento.id = invitacion.id_evento AND invitacion.id = asistencia.id_invitacion
 insert into mesa values(1,2, 'cuadrado', 5);
-insert into silla values(1,1,1);
-insert into silla values(2,2,1);
-insert into silla values(3,3,1);
-insert into silla values(4,4,1);
-insert into silla values(5,5,1);
+insert into mesa values(2,2, 'redonda', 2);
+insert into silla values(1,1);
+insert into silla values(2,1);
+insert into silla values(3,1);
+insert into silla values(4,1);
+insert into silla values(5,1);
 
+insert into silla values(6,2);
+insert into silla values(7,2);
 ALTER TABLE asistencia
 DROP CONSTRAINT asistencia_id_invitacion_fkey; -- Elimina la restricción existente
 

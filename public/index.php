@@ -116,6 +116,80 @@ switch ($url) {
         }
         break;
 
+    case '/eventos/mesas':
+        $idEvento = isset($queryParams['id']) ? $queryParams['id'] : null;
+
+        if ($idEvento) {
+            require __DIR__ . '/../src/Negocio/NMesas.php';
+            $nMesa = new NMesa($conexion);
+            $mesas = $nMesa->listarMesas($idEvento);
+            require __DIR__ . '/../src/Presentacion/views/mesas/gestionar.php';
+        } else {
+        }
+        break;
+
+    case '/eventos/mesas/crear':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            require __DIR__ . '/../src/Negocio/NMesas.php';
+            $nMesa = new NMesa($conexion);
+            $idEvento = $_POST["id_evento"];
+            $tipo = $_POST["tipo"];
+            $cant_sillas = $_POST["cant_sillas"];
+            $nMesa->crearMesa($idEvento, $tipo, $cant_sillas);
+        } else {
+            require __DIR__ . '/../src/Presentacion/views/eventos/crear.php';
+        }
+        break;
+
+    case '/eventos/mesas/editar':
+        require __DIR__ . '/../src/Negocio/NMesas.php';
+        $nMesa = new NMesa($conexion);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id_mesa = $_POST["id_mesa"];
+
+            $tipo = $_POST["tipos"];
+            $nMesa->actualizarMesa($id_mesa, $tipo);
+        } else {
+            header("Location: /");
+        }
+        break;
+
+
+    case '/eventos/mesa/eliminar':
+        require __DIR__ . '/../src/Negocio/NMesas.php';
+        $nMesa = new NMesa($conexion);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id_mesa = $_POST["mesa_id"];
+            echo "ID de la mesa a eliminar: " . var_dump($_POST); // Agregar este echo para verificar el ID de la mesa
+            $nMesa->eliminarMesa($id_mesa);
+        } else {
+            require __DIR__ . '/../src/Presentacion/views/eventos/crear.php';
+        }
+        break;
+
+    case '/eventos/mesas/sillas':
+        $mesaId = isset($queryParams['id']) ? $queryParams['id'] : null;
+        $disp = isset($queryParams['disp']) ? $queryParams['disp'] : null;
+        if ($mesaId) {
+            require __DIR__ . '/../src/Negocio/NSilla.php';
+            $nSilla = new NSilla($conexion);
+            $sillas = $nSilla->listarSillas($mesaId);
+            require __DIR__ . '/../src/Presentacion/views/sillas/gestionar.php';
+        } else {
+        }
+        break;
+
+    case '/eventos/mesas/sillas/editar':
+        require __DIR__ . '/../src/Negocio/NSilla.php';
+        $nSilla = new NSilla($conexion);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $idMesa = $_POST["id_mesa"];
+            $cant = $_POST["cant"];
+            $nSilla->actualizarSillas($idMesa, $cant);
+        } else {
+            header("Location: /");
+        }
+        break;
     case '/eventos/asistencia/registrar':
         require __DIR__ . '/../src/Negocio/AsistenciaController.php';
         $asistenciaController = new AsistenciaController($conexion);

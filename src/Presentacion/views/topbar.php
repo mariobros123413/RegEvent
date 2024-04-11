@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio - Mi Proyecto</title>
-    <link rel="stylesheet" href="../style/topbar.css">
+    <link rel="stylesheet" href="../../../style/topbar.css">
 </head>
 
 <body>

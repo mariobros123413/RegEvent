@@ -5,95 +5,7 @@
     <meta charset="UTF-8">
     <title>Listar Eventos</title>
     <link rel="stylesheet" href="../style/listar_eventos.css">
-    <style>
-        /* Estilos para la ventana emergente */
-        /* Estilos para el formulario de edición */
-        .modal {
-            display: none;
-            /* Ocultar el modal por defecto */
-            position: fixed;
-            /* Posición fija */
-            z-index: 1;
-            /* Asegurar que el modal esté por encima del resto del contenido */
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            /* Habilitar el desplazamiento si es necesario */
-            background-color: rgba(0, 0, 0, 0.4);
-            /* Fondo oscuro semitransparente */
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto;
-            /* Centrar verticalmente y colocar 10% desde la parte superior */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 40%;
-            /* Ancho del contenido */
-            border-radius: 5px;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            /* Sombra */
-        }
-
-        /* Estilo para el botón de cerrar */
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        /* Estilo para los títulos */
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        /* Estilos para los campos del formulario */
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        input[type="text"],
-        input[type="date"],
-        input[type="time"] {
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        button[type="submit"] {
-            padding: 10px 20px;
-            background-color: #333;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        button[type="submit"]:hover {
-            background-color: #2d3d2e;
-        }
-    </style>
+    
 </head>
 
 <body>
@@ -175,6 +87,8 @@
                             </button>
                             <button onclick="registrarAsistencia(<?php echo $evento['id']; ?>)">Registrar
                                 Asistencia
+                            </button>
+                            <button onclick="verMesas(<?php echo $evento['id']; ?>)">Gestionar Mesas
                             </button>
                         </td>
                         <!-- Agrega más columnas si es necesario -->
@@ -277,6 +191,10 @@
 
         function registrarAsistencia(eventoId) {
             window.location.href = '/eventos/asistencia?id=' + eventoId;
+        }
+
+        function verMesas(eventoId) {
+            window.location.href = '/eventos/mesas?id=' + eventoId;
         }
 
         function cerrarModal(modalId) {
