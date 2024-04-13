@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>Listar Eventos</title>
     <link rel="stylesheet" href="../style/listar_invitaciones.css">
+    <link rel="stylesheet" href="../style/buttons.css">
+
 </head>
 
 <body>
@@ -48,7 +50,7 @@
         }
         ?>
         <h1>Listado de Mesas</h1>
-        <button onclick="crearMesa(<?php echo $_GET['id']; ?>)">Crear Mesa</button>
+        <button type="submit"onclick="crearMesa(<?php echo $_GET['id']; ?>)">Crear Mesa</button>
 
         <table>
             <thead>
@@ -78,12 +80,12 @@
                             <?php echo $mesa['sillas_disponibles']; ?>
                         </td>
                         <td>
-                            <button onclick="gestSillas(<?php echo $mesa['id']; ?>, '<?php echo $mesa['sillas_disponibles']; ?>')">
+                            <button type="submit" onclick="gestSillas(<?php echo $mesa['id']; ?>, '<?php echo $mesa['sillas_disponibles']; ?>')">
                                 Gestionar Sillas
                             </button>
-                            <button onclick="editarMesa(<?php echo $mesa['id']; ?>)">Editar</button>
+                            <button class="button button-edit" onclick="editarMesa(<?php echo $mesa['id']; ?>)">Editar</button>
 
-                            <button onclick="eliminarMesa(<?php echo $mesa['id']; ?>)">Eliminar</button>
+                            <button class="button button-delete" onclick="eliminarMesa(<?php echo $mesa['id']; ?>)">Eliminar</button>
 
                         </td>
                         <!-- Agrega más columnas si es necesario -->

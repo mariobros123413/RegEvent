@@ -1,6 +1,6 @@
 <?php
 
-class EventosDAO
+class DEvento
 {
     private $conexion;
 

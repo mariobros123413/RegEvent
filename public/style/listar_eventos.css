@@ -6,12 +6,13 @@ body {
 }
 
 .container {
-    max-width: 50%; /* Ajusta este valor según prefieras */
+    max-width: 50%;
+    /* Ajusta este valor según prefieras */
     margin: 40px auto;
     padding: 20px;
     background-color: white;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
@@ -114,18 +115,4 @@ input[type="time"] {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
-}
-
-button[type="submit"] {
-    padding: 10px 20px;
-    background-color: #333;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-button[type="submit"]:hover {
-    background-color: #2d3d2e;
 }

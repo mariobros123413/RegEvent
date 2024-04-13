@@ -4,22 +4,22 @@ if (session_status() == PHP_SESSION_NONE)
 
 
 
-require_once './../src/Datos/MesaDAO.php';
+require_once './../src/Datos/DMesa.php';
 require_once './../src/Negocio/NSilla.php';
 class NMesa
 {
-    private $DMesa;
-    private $NSilla;
+    private $dMesa;
+    private $nSilla;
     public function __construct($conexion)
     {
-        $this->DMesa = new MesaDAO($conexion);
-        $this->NSilla = new NSilla($conexion);
+        $this->dMesa = new DMesa($conexion);
+        $this->nSilla = new NSilla($conexion);
     }
 
     public function listarMesas($eventoId)
     {
         if ($eventoId) {
-            $mesas = $this->DMesa->listarMesas($eventoId);
+            $mesas = $this->dMesa->listarMesas($eventoId);
             $_SESSION['evento_mesa_actual'] = [
                 'id' => $_GET['id'],
             ];
@@ -32,8 +32,8 @@ class NMesa
 
     public function crearMesa($eventoId, $tipo, $cant_sillas)
     {
-        $resultado = $this->DMesa->crearMesa($eventoId, $tipo, $cant_sillas);
-        $resultado_silla = $this->NSilla->agregarSillas($resultado, $cant_sillas);
+        $resultado = $this->dMesa->crearMesa($eventoId, $tipo, $cant_sillas);
+        $resultado_silla = $this->nSilla->agregarSillas($resultado, $cant_sillas);
 
         if ($resultado_silla) {
             $_SESSION['mesa_creada'] = true;
@@ -48,9 +48,10 @@ class NMesa
 
     public function eliminarMesa($mesaId)
     {
-        
-        $resultado = $this->DMesa->eliminarMesa($mesaId);
-        if ($resultado) {
+
+        $resultado = $this->dMesa->eliminarMesa($mesaId);
+        $resultado2 = $this->setMesaCero($mesaId);
+        if ($resultado && $resultado2) {
             $_SESSION["mesa_eliminada"] = true;
             header("Location: /eventos/mesas?id={$_SESSION['evento_mesa_actual']['id']}");
             return true;
@@ -62,7 +63,7 @@ class NMesa
 
     public function actualizarMesa($eventoId, $tipo)
     {
-        $resultado = $this->DMesa->actualizarMesa($eventoId, $tipo);
+        $resultado = $this->dMesa->actualizarMesa($eventoId, $tipo);
         if ($resultado) {
             $_SESSION["mesa_actualizada"] = true;
             header("Location: /eventos/mesas?id={$_SESSION['evento_mesa_actual']['id']}");
@@ -73,16 +74,16 @@ class NMesa
         }
     }
 
-    // public function getCantInvitaciones($mesaId)
-    // {
-    //     return $this->DMesa->getCantInvitacionesDeMesa($mesaId);
-    // }
-
-    // public function getCantSillasDisponibles($mesaId){
-    //     $cantInvitacionesMesa = $this->DMesa->getCantInvitacionesDeMesa($mesaId);
-    //     $capacidadMesa = $this->DMesa->getMesa($mesaId)["capacidad"];
-    //     return $capacidadMesa - $cantInvitacionesMesa;
-    // }
+    public function setMesaCero($idMesa)
+    {
+        $resultado = $this->dMesa->cancelarMesa($idMesa);
+        if ($resultado) {
+            return true;
+        } else {
+            echo "Hubo un error al setMesaCero la mesa";
+            return false;
+        }
+    }
 }
 $nMesa = new NMesa($conexion);
 

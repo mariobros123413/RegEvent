@@ -5,96 +5,100 @@
     <meta charset="UTF-8">
     <title>Invitaciones del Evento</title>
     <link rel="stylesheet" href="../style/listar_invitaciones.css">
-    <style>
-        /* Estilos para la ventana emergente */
-        /* Estilos para el formulario de edición */
-        .modal {
-            display: none;
-            /* Ocultar el modal por defecto */
-            position: fixed;
-            /* Posición fija */
-            z-index: 1;
-            /* Asegurar que el modal esté por encima del resto del contenido */
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            /* Habilitar el desplazamiento si es necesario */
-            background-color: rgba(0, 0, 0, 0.4);
-            /* Fondo oscuro semitransparente */
-        }
+    <link rel="stylesheet" href="../style/buttons.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto;
-            /* Centrar verticalmente y colocar 10% desde la parte superior */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 40%;
-            /* Ancho del contenido */
-            border-radius: 5px;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            /* Sombra */
-        }
+<style>
+    /* Estilos para la ventana emergente */
+    /* Estilos para el formulario de edición */
+    .modal {
+        display: none;
+        /* Ocultar el modal por defecto */
+        position: fixed;
+        /* Posición fija */
+        z-index: 1;
+        /* Asegurar que el modal esté por encima del resto del contenido */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        /* Habilitar el desplazamiento si es necesario */
+        background-color: rgba(0, 0, 0, 0.4);
+        /* Fondo oscuro semitransparente */
+    }
 
-        /* Estilo para el botón de cerrar */
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+    .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto;
+        /* Centrar verticalmente y colocar 10% desde la parte superior */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 40%;
+        /* Ancho del contenido */
+        border-radius: 5px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        /* Sombra */
+    }
 
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
+    /* Estilo para el botón de cerrar */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
 
-        /* Estilo para los títulos */
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
 
-        /* Estilos para los campos del formulario */
-        form {
-            display: flex;
-            flex-direction: column;
-        }
+    /* Estilo para los títulos */
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
 
-        label {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
+    /* Estilos para los campos del formulario */
+    form {
+        display: flex;
+        flex-direction: column;
+    }
 
-        input[type="text"],
-        input[type="number"],
-        input[type="date"],
-        input[type="time"] {
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
+    label {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
 
-        button[type="submit"] {
-            padding: 10px 20px;
-            background-color: #333;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="time"] {
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
 
-        button[type="submit"]:hover {
-            background-color: #2d3d2e;
-        }
-    </style>
+    button[type="submit"] {
+        padding: 10px 20px;
+        background-color: #333;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #2d3d2e;
+    }
+</style>
 </head>
 
 <body>
@@ -128,9 +132,11 @@
             </script>
             <?php
         }
+
         ?>
+
         <h2>Invitaciones del Evento</h2>
-        <button onclick="crearInvitacion(<?php echo $_GET['id']; ?>)">Crear Invitación</button>
+        <button type="submit" onclick="crearInvitacion(<?php echo $_GET['id']; ?>)">Crear Invitación</button>
         <!-- Reemplaza rutaParaCrearInvitacion con tu ruta correcta -->
         <table>
             <thead>
@@ -138,32 +144,50 @@
                     <th>ID Invitación</th>
                     <th>Nombre del Invitado</th>
                     <th>Nro Celular del Invitado</th>
+                    <th>Mesa Asignada</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody>
-                <?php foreach ($invitaciones as $invitacion): ?>
-                    <tr>
-                        <td>
-                            <?php echo ($invitacion['id_invitacion']); ?>
-                        </td>
-                        <td>
-                            <?php echo ($invitacion['nombre_invitado']); ?>
-                        </td>
-                        <td>
-                            <?php echo ($invitacion['nro_celular']); ?>
-                        </td>
-                        <td>
-                            <button onclick="compartirInvitacion('<?php echo $invitacion['id_invitacion']; ?>', '<?php echo $invitacion['nro_celular']; ?>',
-                                '<?php echo $invitacion['titulo']; ?>','<?php echo $invitacion['direccion']; ?> ','<?php echo $invitacion['descripcion']; ?>' , '<?php echo $invitacion['fecha']; ?>',
-                                '<?php echo $invitacion['nombre_invitado']; ?> ' )">Compartir QR</button>
-                            <button
-                                onclick="eliminarInvitacion(<?php echo $invitacion['id_invitacion']; ?>)">Eliminar</button>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
+            <?php if (!empty($datos['invitaciones'])): ?>
+
+                <tbody>
+                    <?php foreach ($datos['invitaciones'] as $invitacion): ?>
+                        <tr>
+                            <td>
+                                <?php echo ($invitacion['id_invitacion']); ?>
+                            </td>
+                            <td>
+                                <?php echo ($invitacion['nombre_invitado']); ?>
+                            </td>
+                            <td>
+                                <?php echo ($invitacion['nro_celular']); ?>
+                            </td>
+                            <td>
+                                <?php echo ($invitacion['mesa_asignada']); ?>
+                            </td>
+                            <td>
+                                <button class="button button-qr" onclick="compartirInvitacion('<?php echo $invitacion['id_invitacion']; ?>', '<?php echo $invitacion['nro_celular']; ?>',
+    '<?php echo $invitacion['titulo']; ?>','<?php echo $invitacion['direccion']; ?> ','<?php echo $invitacion['descripcion']; ?>' , '<?php echo $invitacion['fecha']; ?>',
+    '<?php echo $invitacion['nombre_invitado']; ?> ' )">
+                                    <i class="fa fa-whatsapp"></i>Compartir QR
+                                </button>
+                                <button class="button button-edit"
+                                    onclick="editarInvitacion(<?php echo $invitacion['id_invitacion']; ?>)">Editar</button>
+
+                                <button class="button button-delete"
+                                    onclick="eliminarInvitacion(<?php echo $invitacion['id_invitacion']; ?>)">
+                                    Eliminar
+                                </button>
+                            </td>
+
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            <?php else: ?>
+                <p>No hay invitaciones para mostrar. ¡Crea algunas!</p>
+            <?php endif; ?>
         </table>
+
     </div>
 
     <div id="crearInvitacionModal" class="modal">
@@ -180,11 +204,63 @@
                     <label for="nro_celular">Número de Celular:</label>
                     <input type="number" id="nro_celular" name="nro_celular" required>
                 </div>
+                <div class="form-group">
+                    <label for="mesa_asignada">Seleccionar Mesa:</label>
+                    <select id="mesa_asignada" name="mesa_asignada" required>
+                        <?php foreach ($datos['mesas'] as $mesa): ?>
+                            <?php
+                            // Verificar si hay sillas disponibles y si la mesa no está seleccionada
+                            $sillas_disponibles = $mesa['sillas_disponibles'];
+                            $disabled = ($sillas_disponibles == 0 ) ? 'disabled' : '';
+                            ?>
+                            <option value="<?php echo $mesa['id']; ?>" <?php echo $disabled; ?>>
+                                Mesa <?php echo $mesa['id']; ?> (Sillas disponibles: <?php echo $sillas_disponibles; ?>)
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
                 <!-- Agrega más campos según sea necesario -->
                 <button type="submit">Crear Invitación</button>
             </form>
         </div>
     </div>
+
+    <div id="editarInvitacionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal('editarInvitacionModal')">&times;</span>
+            <h2>Editar Invitacion</h2>
+            <form id="editarInvitacionForm" action="/eventos/invitaciones/editar" method="POST">
+                <input type="hidden" id="idInvitacion" name="idInvitacion">
+                <div class="form-group">
+                    <label for="nombre_invitado">Nombre del Invitado:</label>
+                    <input type="text" id="nombre_invitado" name="nombre_invitado" required>
+                </div>
+                <div class="form-group">
+                    <label for="nrocelular">Número de Celular:</label>
+                    <input type="number" id="nrocelular" name="nrocelular" required>
+                </div>
+                <div class="form-group">
+                    <label for="mesa_asignada">Seleccionar Mesa:</label>
+                    <select id="mesa_asignada" name="mesa_asignada" required>
+                        <?php foreach ($datos['mesas'] as $mesa): ?>
+                            <?php
+                            // Verificar si hay sillas disponibles y si la mesa no está seleccionada
+                            $sillas_disponibles = $mesa['sillas_disponibles'];
+                            $disabled = ($sillas_disponibles == 0 ) ? 'disabled' : '';
+                            ?>
+                            <option value="<?php echo $mesa['id']; ?>" <?php echo $disabled; ?>>
+                                Mesa <?php echo $mesa['id']; ?> (Sillas disponibles: <?php echo $sillas_disponibles; ?>)
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <!-- Agrega más campos según sea necesario -->
+                <button type="submit">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
 
     <div id="eliminarInvitacionModal" class="modal">
         <div class="modal-content">
@@ -193,8 +269,8 @@
             <form id="eliminarInvitacionForm" action="/eventos/invitaciones/eliminar" method="POST">
                 <input type="hidden" id="id_invitacion" name="id_invitacion">
                 <p>¿Estás seguro de querer eliminar esta invitacion?</p>
-                <button type="submit">Eliminar</button>
-                <button type="button" onclick="cerrarModal('eliminarInvitacionModal')">Cancelar</button>
+                <button class="button button-delete">Eliminar</button>
+                <button class="button button-cancel" onclick="cerrarModal('eliminarInvitacionModal')">Cancelar</button>
             </form>
         </div>
     </div>
@@ -218,6 +294,28 @@
             // Abre WhatsApp con el enlace generado
             window.open(enlace, '_blank');
         }
+
+        function editarInvitacion(invitacionId) {
+            var invitaciones = <?php echo json_encode($datos['invitaciones']); ?>; // Obtener el array de invitaciones desde PHP
+            var invitacion = invitaciones.find(function (item) {
+                return item.id_invitacion === invitacionId; // Buscar la invitación por su ID
+            });
+
+            if (invitacion) {
+                // Si se encuentra la invitación, completar el formulario de edición con sus datos
+                document.getElementById('idInvitacion').value = invitacion.id_invitacion;
+                document.getElementById('nombre_invitado').value = invitacion.nombre_invitado;
+                document.getElementById('nrocelular').value = invitacion.nro_celular;
+                document.getElementById('mesa_asignada').value = invitacion.mesa_asignada;
+
+                // Mostrar la ventana emergente de edición
+                document.getElementById('editarInvitacionModal').style.display = 'block';
+            } else {
+                // Si no se encuentra la invitación, mostrar un mensaje de error
+                alert('Invitación no encontrada');
+            }
+        }
+
 
         function crearInvitacion(eventoId) {
 

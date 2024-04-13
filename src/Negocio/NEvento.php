@@ -5,22 +5,22 @@ if (session_status() == PHP_SESSION_NONE)
 
 
 
-require_once './../src/Datos/EventosDAO.php';
+require_once './../src/Datos/DEvento.php';
 
-class EventosController
+class NEvento
 {
-    private $eventosService;
+    private $dEvento;
 
     public function __construct($conexion)
     {
-        $this->eventosService = new EventosDAO($conexion);
+        $this->dEvento = new DEvento($conexion);
     }
 
     public function crearEvento($titulo, $direccion, $descripcion, $fecha, $hora)
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            $resultado = $this->eventosService->crearEvento($titulo, $direccion, $descripcion, $fecha . ' ' . $hora);
+            $resultado = $this->dEvento->crearEvento($titulo, $direccion, $descripcion, $fecha . ' ' . $hora);
 
             if ($resultado) {
                 $_SESSION['evento_creado'] = true;
@@ -35,7 +35,7 @@ class EventosController
 
     public function listarEventos()
     {
-        $eventos = $this->eventosService->obtenerTodosEventos();
+        $eventos = $this->dEvento->obtenerTodosEventos();
         if ($eventos) {
             return $eventos;
         } else {
@@ -48,7 +48,7 @@ class EventosController
         $fechaHora = $fecha . ' ' . $hora;
 
         // Llamar al método de la capa de negocio para actualizar el evento
-        $resultado = $this->eventosService->actualizarEvento($id_evento, $titulo, $direccion, $descripcion, $fechaHora);
+        $resultado = $this->dEvento->actualizarEvento($id_evento, $titulo, $direccion, $descripcion, $fechaHora);
 
         // Procesa el resultado de la actualización...
         if ($resultado) {
@@ -64,7 +64,7 @@ class EventosController
     {
         if (isset($_POST['id_evento_eliminar'])) {
 
-            $resultado = $this->eventosService->eliminarEvento($id_evento);
+            $resultado = $this->dEvento->eliminarEvento($id_evento);
             if ($resultado) {
                 $_SESSION['evento_eliminado'] = true;
                 header("Location: /eventos/listar"); // Redirigir a la página de listar eventos
@@ -80,9 +80,5 @@ class EventosController
 
 
 }
-
-// Obtener la conexión a la base de datos
-
-// Inicializar el controlador de eventos
-$eventosController = new EventosController($conexion);
+$nEvento = new NEvento($conexion);
 ?>

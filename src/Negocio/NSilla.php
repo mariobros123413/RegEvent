@@ -4,21 +4,21 @@ if (session_status() == PHP_SESSION_NONE)
 
 
 
-require_once './../src/Datos/SillaDAO.php';
+require_once './../src/Datos/DSilla.php';
 
 class NSilla
 {
-    private $DSilla;
+    private $dSilla;
 
     public function __construct($conexion)
     {
-        $this->DSilla = new SillaDAO($conexion);
+        $this->dSilla = new DSilla($conexion);
     }
 
     public function listarSillas($mesaId)
     {
         if ($mesaId) {
-            $sillas = $this->DSilla->listarSillas($mesaId);
+            $sillas = $this->dSilla->listarSillas($mesaId);
             $_SESSION['mesa_actual'] = [
                 'id' => $_GET['id'],
                 'disp' => $_GET['disp'],
@@ -32,7 +32,7 @@ class NSilla
 
     public function actualizarSillas($mesaId, $cant)
     {
-        $resultado = $this->DSilla->actualizarSilla($mesaId, $cant);
+        $resultado = $this->dSilla->actualizarSilla($mesaId, $cant);
         if ($resultado) {
             $_SESSION['sillas_actualizadas'] = true;
             echo "<script>window.location.href = '/eventos/mesas?id={$_SESSION['evento_mesa_actual']['id']}';</script>";
@@ -45,7 +45,7 @@ class NSilla
 
     public function agregarSillas($mesaId, $cant)
     {
-        $resultado = $this->DSilla->agregarSillas($mesaId, $cant);
+        $resultado = $this->dSilla->agregarSillas($mesaId, $cant);
         if ($resultado) {
             // header("Location: /eventos/mesas");
             return true;

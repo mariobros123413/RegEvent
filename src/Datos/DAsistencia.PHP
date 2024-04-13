@@ -1,6 +1,6 @@
 <?php
 
-class AsistenciaDAO
+class DAsistencia
 {
     private $conexion;
 

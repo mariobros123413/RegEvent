@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <title>Listar Eventos</title>
     <link rel="stylesheet" href="../style/listar_eventos.css">
-    
+    <link rel="stylesheet" href="../style/buttons.css">
+
 </head>
 
 <body>
@@ -77,18 +78,18 @@
                             <?php echo $evento['fecha']; ?>
                         </td>
                         <td>
-                            <button onclick="editarEvento(<?php echo $evento['id']; ?>)">Editar</button>
+                            <button class="button button-edit"onclick="editarEvento(<?php echo $evento['id']; ?>)">Editar</button>
                             <!-- Botón para eliminar -->
-                            <button onclick="eliminarEvento(<?php echo $evento['id']; ?>)">Eliminar</button>
+                            <button class="button button-delete" onclick="eliminarEvento(<?php echo $evento['id']; ?>)">Eliminar</button>
                             <button
-                                onclick="verInvitaciones('<?php echo $evento['id']; ?>','<?php echo $evento['titulo']; ?>',
+                            type="submit" onclick="verInvitaciones('<?php echo $evento['id']; ?>','<?php echo $evento['titulo']; ?>',
                                 '<?php echo $evento['direccion']; ?>', '<?php echo $evento['descripcion']; ?>', '<?php echo $evento['fecha']; ?>')">
                                 Ver Invitaciones
                             </button>
-                            <button onclick="registrarAsistencia(<?php echo $evento['id']; ?>)">Registrar
+                            <button  type="submit" onclick="registrarAsistencia(<?php echo $evento['id']; ?>)">Registrar
                                 Asistencia
                             </button>
-                            <button onclick="verMesas(<?php echo $evento['id']; ?>)">Gestionar Mesas
+                            <button  type="submit" onclick="verMesas(<?php echo $evento['id']; ?>)">Gestionar Mesas
                             </button>
                         </td>
                         <!-- Agrega más columnas si es necesario -->
@@ -138,8 +139,8 @@
             <form id="eliminarEventoForm" action="/eventos/eliminar" method="POST">
                 <input type="hidden" id="id_evento_eliminar" name="id_evento_eliminar">
                 <p>¿Estás seguro de querer eliminar este evento?</p>
-                <button type="submit">Eliminar</button>
-                <button type="button" onclick="cerrarModal('eliminarEventoModal')">Cancelar</button>
+                <button class="button button-delete">Eliminar</button>
+                <button type="button" class="button button-cancel" onclick="cerrarModal('eliminarEventoModal')">Cancelar</button>
             </form>
         </div>
     </div>

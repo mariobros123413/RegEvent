@@ -16,29 +16,29 @@ switch ($url) {
 
     case '/eventos/crear':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            require __DIR__ . '/../src/Negocio/EventosController.php';
-            $eventosController = new EventosController($conexion);
+            require __DIR__ . '/../src/Negocio/NEvento.php';
+            $nEvento = new NEvento($conexion);
             $titulo = $_POST["titulo"];
             $direccion = $_POST["direccion"];
             $descripcion = $_POST["descripcion"];
             $fecha = $_POST["fecha"];
             $hora = $_POST["hora"];
-            $eventosController->crearEvento($titulo, $direccion, $descripcion, $fecha, $hora);
+            $nEvento->crearEvento($titulo, $direccion, $descripcion, $fecha, $hora);
         } else {
             require __DIR__ . '/../src/Presentacion/views/eventos/crear.php';
         }
         break;
 
     case '/eventos/listar':
-        require __DIR__ . '/../src/Negocio/EventosController.php';
-        $eventosController = new EventosController($conexion);
-        $eventos = $eventosController->listarEventos();
+        require __DIR__ . '/../src/Negocio/NEvento.php';
+        $nEvento = new NEvento($conexion);
+        $eventos = $nEvento->listarEventos();
         require __DIR__ . '/../src/Presentacion/views/eventos/listar.php';
         break;
 
     case '/eventos/editar':
-        require __DIR__ . '/../src/Negocio/EventosController.php';
-        $eventosController = new EventosController($conexion);
+        require __DIR__ . '/../src/Negocio/NEvento.php';
+        $nEvento = new NEvento($conexion);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_evento = $_POST["id_evento"];
             $titulo = $_POST["titulo"];
@@ -46,26 +46,26 @@ switch ($url) {
             $descripcion = $_POST["descripcion"];
             $fecha = $_POST["fecha"];
             $hora = $_POST["hora"];
-            $eventosController->editarEvento($id_evento, $titulo, $direccion, $descripcion, $fecha, $hora);
+            $nEvento->editarEvento($id_evento, $titulo, $direccion, $descripcion, $fecha, $hora);
         } else {
             header("Location: /");
         }
         break;
 
     case '/eventos/eliminar':
-        require __DIR__ . '/../src/Negocio/EventosController.php';
-        $eventosController = new EventosController($conexion);
+        require __DIR__ . '/../src/Negocio/NEvento.php';
+        $nEvento = new NEvento($conexion);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_evento = $_POST['id_evento_eliminar'];
-            $eventosController->eliminarEvento($id_evento);
+            $nEvento->eliminarEvento($id_evento);
         } else {
             header("Location: /");
         }
         break;
 
     case '/eventos/invitaciones':
-        require __DIR__ . '/../src/Negocio/InvitacionesController.php';
-        $invitacionesController = new InvitacionesController($conexion);
+        require __DIR__ . '/../src/Negocio/NInvitacion.php';
+        $nInvitacion = new NInvitacion($conexion);
         $idEvento = isset($queryParams['id']) ? $queryParams['id'] : null;
         $nombreEvento = isset($queryParams['titulo']) ? $queryParams['titulo'] : null;
         $lugar = isset($queryParams['direccion']) ? $queryParams['direccion'] : null;
@@ -73,31 +73,50 @@ switch ($url) {
         $hora = isset($queryParams['fecha']) ? $queryParams['fecha'] : null;
 
         if ($idEvento && $nombreEvento && $lugar && $hora) {
-            $invitacionesController->listarInvitacionesPorEvento($idEvento, $nombreEvento, $lugar, $descripcion, $hora);
+            $datos = $nInvitacion->listarInvitacionesPorEvento($idEvento, $nombreEvento, $lugar, $descripcion, $hora);
+            // Define $datos en un ámbito que la vista pueda acceder
+            $GLOBALS['datos'] = $datos;
+            require_once __DIR__ . '/../src/Presentacion/views/invitaciones/listar.php';
         } else {
             echo "Datos del evento requeridos.";
         }
         break;
 
+
     case '/eventos/invitaciones/crear':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            require __DIR__ . '/../src/Negocio/InvitacionesController.php';
-            $invitacionesController = new InvitacionesController($conexion);
+            require __DIR__ . '/../src/Negocio/NInvitacion.php';
+            $nInvitacion = new NInvitacion($conexion);
             $id_evento = $_POST["id_evento"];
             $nombre_invitado = $_POST["nombre"];
             $nro_celular = $_POST["nro_celular"];
-            $invitacionesController->agregarInvitacion($id_evento, $nombre_invitado, $nro_celular);
+            $mesa_asignada = $_POST["mesa_asignada"];  // Captura el valor de la mesa seleccionada
+            $nInvitacion->agregarInvitacion($id_evento, $nombre_invitado, $nro_celular, $mesa_asignada);
         } else {
             require __DIR__ . '/../src/Presentacion/views/eventos/crear.php';
         }
         break;
 
+    case '/eventos/invitaciones/editar':
+        require __DIR__ . '/../src/Negocio/NInvitacion.php';
+        $nInvitacion = new NInvitacion($conexion);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $idInvitacion = $_POST["idInvitacion"];
+            $nombre_invitado = $_POST["nombre_invitado"];
+            $nro_celular = $_POST["nrocelular"];
+            $mesa_asignada = $_POST["mesa_asignada"];
+            $nInvitacion->actualizarInvitacion($idInvitacion, $nombre_invitado, $nro_celular, $mesa_asignada);
+        } else {
+            header("Location: /");
+        }
+        break;
+
     case '/eventos/invitaciones/eliminar':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            require __DIR__ . '/../src/Negocio/InvitacionesController.php';
-            $invitacionesController = new InvitacionesController($conexion);
+            require __DIR__ . '/../src/Negocio/NInvitacion.php';
+            $nInvitacion = new NInvitacion($conexion);
             $id = $_POST["id_invitacion"];
-            $invitacionesController->eliminarInvitacion($id);
+            $nInvitacion->eliminarInvitacion($id);
         } else {
             require __DIR__ . '/../src/Presentacion/views/eventos/crear.php';
         }
@@ -107,9 +126,9 @@ switch ($url) {
         $idEvento = isset($queryParams['id']) ? $queryParams['id'] : null;
 
         if ($idEvento) {
-            require __DIR__ . '/../src/Negocio/AsistenciaController.php';
-            $asistenciaController = new AsistenciaController($conexion);
-            $asistencias = $asistenciaController->obtenerAsistencias($idEvento);
+            require __DIR__ . '/../src/Negocio/NAsistencia.php';
+            $nAsistencia = new NAsistencia($conexion);
+            $asistencias = $nAsistencia->obtenerAsistencias($idEvento);
             require __DIR__ . '/../src/Presentacion/views/Asistencia/registrar.php';
         } else {
             header("Location: /");
@@ -120,7 +139,7 @@ switch ($url) {
         $idEvento = isset($queryParams['id']) ? $queryParams['id'] : null;
 
         if ($idEvento) {
-            require __DIR__ . '/../src/Negocio/NMesas.php';
+            require __DIR__ . '/../src/Negocio/NMesa.php';
             $nMesa = new NMesa($conexion);
             $mesas = $nMesa->listarMesas($idEvento);
             require __DIR__ . '/../src/Presentacion/views/mesas/gestionar.php';
@@ -130,7 +149,7 @@ switch ($url) {
 
     case '/eventos/mesas/crear':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            require __DIR__ . '/../src/Negocio/NMesas.php';
+            require __DIR__ . '/../src/Negocio/NMesa.php';
             $nMesa = new NMesa($conexion);
             $idEvento = $_POST["id_evento"];
             $tipo = $_POST["tipo"];
@@ -142,7 +161,7 @@ switch ($url) {
         break;
 
     case '/eventos/mesas/editar':
-        require __DIR__ . '/../src/Negocio/NMesas.php';
+        require __DIR__ . '/../src/Negocio/NMesa.php';
         $nMesa = new NMesa($conexion);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_mesa = $_POST["id_mesa"];
@@ -156,7 +175,7 @@ switch ($url) {
 
 
     case '/eventos/mesa/eliminar':
-        require __DIR__ . '/../src/Negocio/NMesas.php';
+        require __DIR__ . '/../src/Negocio/NMesa.php';
         $nMesa = new NMesa($conexion);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_mesa = $_POST["mesa_id"];
@@ -191,19 +210,19 @@ switch ($url) {
         }
         break;
     case '/eventos/asistencia/registrar':
-        require __DIR__ . '/../src/Negocio/AsistenciaController.php';
-        $asistenciaController = new AsistenciaController($conexion);
+        require __DIR__ . '/../src/Negocio/NAsistencia.php';
+        $nAsistencia = new NAsistencia($conexion);
         $idInvitacion = $_POST["codigoQR"];
         $idEvento = $_POST["id"];
-        $asistenciaController->registrarAsistencia($idInvitacion, $idEvento);
+        $nAsistencia->registrarAsistencia($idInvitacion, $idEvento);
         break;
 
     case '/eventos/asistencia/sse':
         $idEvento = isset($queryParams['id']) ? $queryParams['id'] : null;
         if ($idEvento) {
-            require __DIR__ . '/../src/Negocio/AsistenciaController.php';
-            $asistenciaController = new AsistenciaController($conexion);
-            $asistenciaController->emitirEventoSSE($idEvento);
+            require __DIR__ . '/../src/Negocio/NAsistencia.php';
+            $nAsistencia = new NAsistencia($conexion);
+            $nAsistencia->emitirEventoSSE($idEvento);
         } else {
             echo "ID del evento requerido.";
         }

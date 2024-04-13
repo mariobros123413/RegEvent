@@ -4,15 +4,15 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once './../src/Datos/AsistenciaDAO.php';
+require_once './../src/Datos/DAsistencia.php';
 
-class AsistenciaController
+class NAsistencia
 {
-    private $asistenciaModel;
+    private $dAsistencia;
 
     public function __construct($conexion)
     {
-        $this->asistenciaModel = new AsistenciaDAO($conexion);
+        $this->dAsistencia = new DAsistencia($conexion);
     }
 
     public function registrarAsistencia($idInvitacion, $idEvento)
@@ -21,7 +21,7 @@ class AsistenciaController
             if ($this->verificarAsistenciaExistente($idInvitacion)) {
                 return false;
             }
-            $this->asistenciaModel->registrarAsistencia($idInvitacion);
+            $this->dAsistencia->registrarAsistencia($idInvitacion);
             echo json_encode(['success' => true, 'message' => 'Asistencia registrada con éxito.']);
             
             exit;
@@ -32,7 +32,7 @@ class AsistenciaController
     public function obtenerAsistencias($idEvento)
     {
         if ($idEvento) {
-            $asistencias = $this->asistenciaModel->obtenerAsistencias($idEvento);
+            $asistencias = $this->dAsistencia->obtenerAsistencias($idEvento);
             return $asistencias;
         } else {
             echo "No se han encontrado eventos.";
@@ -41,7 +41,7 @@ class AsistenciaController
 
     public function verificarEventoInvitacion($idInvitacion, $idEvento)
     {
-        $resultado = $this->asistenciaModel->verificarEventoInvitacion($idInvitacion, $idEvento);
+        $resultado = $this->dAsistencia->verificarEventoInvitacion($idInvitacion, $idEvento);
         if ($resultado['total'] > 0) {
             return true;
         } else {
@@ -62,7 +62,7 @@ class AsistenciaController
 
     public function verificarAsistenciaExistente($idInvitacion)
     {
-        $resultado = $this->asistenciaModel->cantAsistencias($idInvitacion);
+        $resultado = $this->dAsistencia->cantAsistencias($idInvitacion);
         if ($resultado['total'] > 0) {
             return true;
         } else {

@@ -16,10 +16,6 @@
         <a href="/" class="<?= ($current_page == '/') ? 'active' : '' ?>">Inicio</a>
         <a href="/eventos/crear" class="<?= ($current_page == '/eventos/crear') ? 'active' : '' ?>">Crear Evento</a>
         <a href="/eventos/listar" class="<?= ($current_page == '/eventos/listar') ? 'active' : '' ?>">Listar Eventos</a>
-        <a href="/invitaciones/crear" class="<?= ($current_page == '/invitaciones/crear') ? 'active' : '' ?>">Crear
-            Invitación</a>
-        <a href="/invitaciones/listar" class="<?= ($current_page == '/invitaciones/listar') ? 'active' : '' ?>">Listar
-            Invitaciones</a>
     </div>
 
 </body>

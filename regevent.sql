@@ -55,6 +55,7 @@ select * from silla
 select * from invitacion
 select * from asistencia
 insert into asistencia values(16, '2024-03-30 19:05', 137,5)
+delete from mesa where id=2
 alter table invitacion add column mesa_asignada int
 alter table invitacion drop column id_mesa
 delete from evento where id>2
@@ -63,10 +64,10 @@ insert into usuario values(1, 'j.mario18@hotmail.es', 'jose', 'jose mario')
 insert into invitacion values(2,1,3,'José Jimenez', 75615676)
 insert into asistencia values(2,'2024-03-30 19:05',2, 3)
 DELETE FROM asistencia, invitacion, evento WHERE evento.id = 1 AND evento.id = invitacion.id_evento AND invitacion.id = asistencia.id_invitacion
-insert into mesa values(1,2, 'cuadrado', 5);
+insert into mesa values(2,42, 'cuadrado', 2);
 insert into mesa values(2,2, 'redonda', 2);
-insert into silla values(1,1);
-insert into silla values(2,1);
+insert into silla values(1,2);
+insert into silla values(2,2);
 insert into silla values(3,1);
 insert into silla values(4,1);
 insert into silla values(5,1);

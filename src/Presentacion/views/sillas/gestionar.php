@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Listar Eventos</title>
     <link rel="stylesheet" href="../../../style/listar_invitaciones.css">
+    <link rel="stylesheet" href="../../../style/buttons.css">
 
 </head>
 
@@ -33,7 +34,7 @@
         }
         ?>
         <h1>Listado de Sillas</h1>
-        <button onclick="actualizarSillas(<?php echo $_GET['id']; ?>)">Actualizar Sillas</button>
+        <button type="submit" onclick="actualizarSillas(<?php echo $_GET['id']; ?>)">Actualizar Sillas</button>
         <br>
         <br>
         <label for="cant">Cantidad total de sillas: <?php echo $totalSillas; ?></label>

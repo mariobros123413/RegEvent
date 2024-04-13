@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>Crear Evento</title>
     <link rel="stylesheet" href="../style/crear_evento.css">
+    <link rel="stylesheet" href="../style/buttons.css">
+
 </head>
 
 <body>
@@ -17,13 +19,10 @@
 
     <div class="container">
         <?php
-        // Verificar si el evento se creó correctamente y mostrar un mensaje
         if (isset($_SESSION['evento_creado']) && $_SESSION['evento_creado'] === true) {
-            // Eliminar la variable de sesión para que el mensaje no aparezca en futuras visitas a la página
             unset($_SESSION['evento_creado']);
             ?>
             <script>
-                // Muestra una ventana emergente con el mensaje
                 alert("El evento se creó correctamente.");
             </script>
             <?php
@@ -52,7 +51,7 @@
                 <input type="time" id="hora" name="hora" required>
             </div>
             <!-- Agrega más campos según sea necesario -->
-            <button type="button" onclick="crearEvento()">Crear Evento</button>
+            <button type="submit" onclick="crearEvento()">Crear Evento</button>
         </form>
     </div>
 
@@ -67,7 +66,7 @@
 
             // Aquí puedes añadir más validaciones según sea necesario
             if (titulo === "" || direccion === "" || descripcion === "" || fecha === "" || hora === "") {
-                alert("Por favor, completa todos los campos.");
+                
                 return false;
             }
 
