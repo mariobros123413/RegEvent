@@ -52,7 +52,7 @@
                 <?php foreach ($sillas as $silla): ?>
                     <tr>
                         <td>
-                            <?php echo $silla['id']; ?> <!-- hacer por nro de mesa-->
+                            <?php echo $silla['nro']; ?> <!-- hacer por nro de mesa-->
                         </td>
 
                         <!-- Agrega más columnas si es necesario -->

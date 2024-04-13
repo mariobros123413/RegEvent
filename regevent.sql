@@ -56,7 +56,7 @@ select * from invitacion
 select * from asistencia
 insert into asistencia values(16, '2024-03-30 19:05', 137,5)
 delete from mesa where id=2
-alter table invitacion add column mesa_asignada int
+alter table silla add column nro int
 alter table invitacion drop column id_mesa
 delete from evento where id>2
 alter table asistencia drop column id_evento

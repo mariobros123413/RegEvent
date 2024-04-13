@@ -1,6 +1,6 @@
 <?php
 
-class SillaDAO
+class DSilla
 {
     private $conexion;
 
@@ -24,12 +24,13 @@ class SillaDAO
         // Iniciar una transacción
 
         try {
-            $query = "INSERT INTO silla (id_mesa) VALUES (:id_mesa)";
+            $query = "INSERT INTO silla (id_mesa, nro) VALUES (:id_mesa, :nro)";
 
             for ($i = 0; $i < $cant; $i++) {
                 $stmt = $this->conexion->prepare($query);
-                $stmt->execute(array(':id_mesa' => $id_mesa));
-
+                $stmt->bindValue(':id_mesa', $id_mesa, PDO::PARAM_INT);
+                $stmt->bindValue(':nro', $i + 1, PDO::PARAM_INT);
+                $stmt->execute();
             }
 
             return true;
