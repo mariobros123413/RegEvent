@@ -43,9 +43,9 @@ class NSilla
         }
     }
 
-    public function agregarSillas($mesaId, $cant)
+    public function agregarSillas($mesa_id, $cant)
     {
-        $resultado = $this->dSilla->agregarSillas($mesaId, $cant);
+        $resultado = $this->dSilla->agregarSillas($mesa_id, $cant);
         if ($resultado) {
             // header("Location: /eventos/mesas");
             return true;

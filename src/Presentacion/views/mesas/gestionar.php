@@ -141,6 +141,7 @@
             <form id="eliminarMesaForm" action="/eventos/mesa/eliminar" method="POST">
                 <input type="hidden" id="mesa_id" name="mesa_id">
                 <p>¿Estás seguro de querer eliminar esta mesa?</p>
+                <p>Recuerda actualizar las invitaciones que están ligadas a esta mesa</p>
                 <button type="submit">Eliminar</button>
             </form>
         </div>

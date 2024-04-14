@@ -50,7 +50,7 @@ class NInvitacion
         }
     }
 
-    public function eliminarInvitacion($id) //aumentar idMesa y aumentar silla a la mesa
+    public function eliminarInvitacion($id)
     {
         $resultado = $this->dInvitacion->eliminarInvitacion($id);
         if ($resultado) {

@@ -168,7 +168,7 @@
                             <td>
                                 <button class="button button-qr" onclick="compartirInvitacion('<?php echo $invitacion['id_invitacion']; ?>', '<?php echo $invitacion['nro_celular']; ?>',
     '<?php echo $invitacion['titulo']; ?>','<?php echo $invitacion['direccion']; ?> ','<?php echo $invitacion['descripcion']; ?>' , '<?php echo $invitacion['fecha']; ?>',
-    '<?php echo $invitacion['nombre_invitado']; ?> ' )">
+    '<?php echo $invitacion['nombre_invitado']; ?> ','<?php echo $invitacion['mesa_asignada']; ?> ' )">
                                     <i class="fa fa-whatsapp"></i>Compartir QR
                                 </button>
                                 <button class="button button-edit"
@@ -211,7 +211,7 @@
                             <?php
                             // Verificar si hay sillas disponibles y si la mesa no está seleccionada
                             $sillas_disponibles = $mesa['sillas_disponibles'];
-                            $disabled = ($sillas_disponibles == 0 ) ? 'disabled' : '';
+                            $disabled = ($sillas_disponibles == 0) ? 'disabled' : '';
                             ?>
                             <option value="<?php echo $mesa['id']; ?>" <?php echo $disabled; ?>>
                                 Mesa <?php echo $mesa['id']; ?> (Sillas disponibles: <?php echo $sillas_disponibles; ?>)
@@ -247,7 +247,7 @@
                             <?php
                             // Verificar si hay sillas disponibles y si la mesa no está seleccionada
                             $sillas_disponibles = $mesa['sillas_disponibles'];
-                            $disabled = ($sillas_disponibles == 0 ) ? 'disabled' : '';
+                            $disabled = ($sillas_disponibles == 0) ? 'disabled' : '';
                             ?>
                             <option value="<?php echo $mesa['id']; ?>" <?php echo $disabled; ?>>
                                 Mesa <?php echo $mesa['id']; ?> (Sillas disponibles: <?php echo $sillas_disponibles; ?>)
@@ -268,7 +268,7 @@
             <h2>Eliminar Invitación</h2>
             <form id="eliminarInvitacionForm" action="/eventos/invitaciones/eliminar" method="POST">
                 <input type="hidden" id="id_invitacion" name="id_invitacion">
-                <p>¿Estás seguro de querer eliminar esta invitacion?</p>
+                <p>¿Estás seguro de querer eliminar esta invitación?</p>
                 <button class="button button-delete">Eliminar</button>
                 <button class="button button-cancel" onclick="cerrarModal('eliminarInvitacionModal')">Cancelar</button>
             </form>
@@ -276,15 +276,16 @@
     </div>
 
     <script>
-        function compartirInvitacion(invitacionId, numeroCelular, titulo, direccion, descripcion, fecha, nombre_invitado) { //aumentar mesa_asignada, y enviar al whatsapp
+        function compartirInvitacion(invitacionId, numeroCelular, titulo, direccion, descripcion, fecha, nombre_invitado, mesa_asignada) { //aumentar mesa_asignada, y enviar al whatsapp
             // Genera el código QR
             var qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + encodeURIComponent(invitacionId);
             console.log(descripcion);
             // Formatea el número de celular para WhatsApp (elimina los caracteres no numéricos)
             var mensaje = "¡Hola " + nombre_invitado + ", estás invitado a mi evento!\n" +
                 "Título: " + titulo + "\n" +
-                "Dirección: " + direccion + "\n" +
                 "Descripción: " + descripcion + "\n" +
+                "Dirección: " + direccion + "\n" +
+                "Nro de mesa asignada: " + mesa_asignada + "\n" +
                 "Fecha: " + fecha + "\n" +
                 qrCodeUrl;
 

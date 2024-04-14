@@ -37,7 +37,6 @@ class DMesa
     }
     public function listarMesas($id_evento)
     {
-        // La consulta SQL para PostgreSQL, usando COALESCE en lugar de IFNULL.
         $sql = "SELECT m.*, (m.capacidad - COALESCE(i.total_invitaciones, 0) ) AS sillas_disponibles
             FROM mesa m
             LEFT JOIN (
