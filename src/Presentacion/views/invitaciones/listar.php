@@ -287,6 +287,7 @@
                 "Dirección: " + direccion + "\n" +
                 "Nro de mesa asignada: " + mesa_asignada + "\n" +
                 "Fecha: " + fecha + "\n" +
+                "Codigo QR para el ingreso: " + "\n" +
                 qrCodeUrl;
 
             // Genera el enlace con el número de celular y el código QR

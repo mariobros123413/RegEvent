@@ -66,9 +66,9 @@ insert into asistencia values(2,'2024-03-30 19:05',2, 3)
 DELETE FROM asistencia, invitacion, evento WHERE evento.id = 1 AND evento.id = invitacion.id_evento AND invitacion.id = asistencia.id_invitacion
 insert into mesa values(2,42, 'cuadrado', 2);
 insert into mesa values(2,2, 'redonda', 2);
-insert into silla values(1,2);
-insert into silla values(2,2);
-insert into silla values(3,1);
+insert into silla values(1,1,1);
+insert into silla values(2,1,2);
+insert into silla values(3,1,3);
 insert into silla values(4,1);
 insert into silla values(5,1);
 
