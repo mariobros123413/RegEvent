@@ -47,9 +47,16 @@ class DSilla
             $stmt = $this->conexion->prepare($sql);
             $stmt->bindValue(':id_mesa', $id_mesa, PDO::PARAM_INT);
             $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            echo "Error al agregarSillas: " . $e->getMessage();
+            return false;
+        }
+    }
 
-            $this->agregarSillas($id_mesa, $cant);
-
+    public function setCapacidad($id_mesa, $cant)
+    {
+        try {
             $query = "UPDATE mesa SET capacidad = ? WHERE id = ?";
             $stmt = $this->conexion->prepare($query);
             $stmt->bindValue(1, $cant);
@@ -57,7 +64,7 @@ class DSilla
             $stmt->execute();
             return true;
         } catch (PDOException $e) {
-            echo "Error al agregarSillas: " . $e->getMessage();
+            echo "Error al setCapacidad: " . $e->getMessage();
             return false;
         }
     }

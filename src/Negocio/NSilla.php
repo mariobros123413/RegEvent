@@ -33,6 +33,8 @@ class NSilla
     public function actualizarSillas($mesaId, $cant)
     {
         $resultado = $this->dSilla->actualizarSilla($mesaId, $cant);
+        $resultado2 = $this->agregarSillas($mesaId, $cant);
+        $resultado3 = $this->setCapacidad($mesaId, $cant);
         if ($resultado) {
             $_SESSION['sillas_actualizadas'] = true;
             echo "<script>window.location.href = '/eventos/mesas?id={$_SESSION['evento_mesa_actual']['id']}';</script>";
@@ -51,6 +53,17 @@ class NSilla
             return true;
         } else {
             echo "Hubo un error al agregar las sillas";
+            return false;
+        }
+    }
+
+    public function setCapacidad($id_mesa, $cant)
+    {
+        $resultado = $this->dSilla->setCapacidad($id_mesa, $cant);
+        if ($resultado) {
+            return true;
+        } else {
+            echo "Hubo un error al NsetCapacidad";
             return false;
         }
     }
