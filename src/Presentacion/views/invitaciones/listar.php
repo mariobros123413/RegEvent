@@ -134,7 +134,23 @@
         }
 
         ?>
+        <script>
+            function crearInvitacion(eventoId) {
+                if (eventoId) {
 
+                    // Muestra la ventana emergente de edición
+                    document.getElementById('crearInvitacionModal').style.display = 'block';
+                } else {
+                    // Si no se encuentra el evento, muestra un mensaje de error
+                    alert('Evento no encontrado');
+                }
+            }
+
+            function cerrarModal(modalId) {
+                var modal = document.getElementById(modalId);
+                modal.style.display = 'none';
+            }
+        </script>
         <h2>Invitaciones del Evento</h2>
         <button type="submit" onclick="crearInvitacion(<?php echo $_GET['id']; ?>)">Crear Invitación</button>
         <!-- Reemplaza rutaParaCrearInvitacion con tu ruta correcta -->
@@ -204,13 +220,12 @@
                     <label for="nro_celular">Número de Celular:</label>
                     <input type="number" id="nro_celular" name="nro_celular" required>
                 </div>
-                <div class="form-group">
+                <?php if (!empty($datos['mesas'])): ?>
                     <label for="mesa_asignada">Seleccionar Mesa:</label>
                     <select id="mesa_asignada" name="mesa_asignada" required>
                         <?php foreach ($datos['mesas'] as $mesa): ?>
                             <?php
-                            // Verificar si hay sillas disponibles y si la mesa no está seleccionada
-                            $sillas_disponibles = $mesa['sillas_disponibles'];
+                            $sillas_disponibles = isset($mesa['sillas_disponibles']) ? $mesa['sillas_disponibles'] : 0;
                             $disabled = ($sillas_disponibles == 0) ? 'disabled' : '';
                             ?>
                             <option value="<?php echo $mesa['id']; ?>" <?php echo $disabled; ?>>
@@ -218,9 +233,12 @@
                             </option>
                         <?php endforeach; ?>
                     </select>
-                </div>
+                <?php else: ?>
+                    <input type="hidden" id="mesa_asignada" name="mesa_asignada" value="0">
+                    <p>No hay mesas disponibles.</p>
+                <?php endif; ?>
 
-                <!-- Agrega más campos según sea necesario -->
+
                 <button type="submit">Crear Invitación</button>
             </form>
         </div>
@@ -243,16 +261,20 @@
                 <div class="form-group">
                     <label for="mesa_asignada">Seleccionar Mesa:</label>
                     <select id="mesa_asignada" name="mesa_asignada" required>
-                        <?php foreach ($datos['mesas'] as $mesa): ?>
-                            <?php
-                            // Verificar si hay sillas disponibles y si la mesa no está seleccionada
-                            $sillas_disponibles = $mesa['sillas_disponibles'];
-                            $disabled = ($sillas_disponibles == 0) ? 'disabled' : '';
-                            ?>
-                            <option value="<?php echo $mesa['id']; ?>" <?php echo $disabled; ?>>
-                                Mesa <?php echo $mesa['id']; ?> (Sillas disponibles: <?php echo $sillas_disponibles; ?>)
-                            </option>
-                        <?php endforeach; ?>
+                        <?php if ($datos['mesas'] !== null): ?>
+                            <?php foreach ($datos['mesas'] as $mesa): ?>
+                                <?php
+                                // Verificar si hay sillas disponibles y si la mesa no está seleccionada
+                                $sillas_disponibles = $mesa['sillas_disponibles'];
+                                $disabled = ($sillas_disponibles == 0) ? 'disabled' : '';
+                                ?>
+                                <option value="<?php echo $mesa['id']; ?>" <?php echo $disabled; ?>>
+                                    Mesa <?php echo $mesa['id']; ?> (Sillas disponibles: <?php echo $sillas_disponibles; ?>)
+                                </option>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <option value="0" disabled>No hay mesas disponibles</option>
+                        <?php endif; ?>
                     </select>
                 </div>
                 <!-- Agrega más campos según sea necesario -->
@@ -319,17 +341,7 @@
         }
 
 
-        function crearInvitacion(eventoId) {
 
-            if (eventoId) {
-
-                // Muestra la ventana emergente de edición
-                document.getElementById('crearInvitacionModal').style.display = 'block';
-            } else {
-                // Si no se encuentra el evento, muestra un mensaje de error
-                alert('Evento no encontrado');
-            }
-        }
 
         function eliminarInvitacion(invitacionId) {
 
@@ -337,10 +349,7 @@
             document.getElementById('eliminarInvitacionModal').style.display = 'block';
         }
 
-        function cerrarModal(modalId) {
-            var modal = document.getElementById(modalId);
-            modal.style.display = 'none';
-        }
+
     </script>
 </body>
 
