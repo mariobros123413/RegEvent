@@ -2,10 +2,12 @@
 require_once '../src/Datos/Database.php';
 require_once '../src/Negocio/NEvento.php';
 require_once '../src/Negocio/NInvitacion.php';
+require_once '../src/Negocio/NAsistencia.php';
+require_once '../src/Negocio/NSilla.php';
+
 require_once '../src/Datos/DInvitacion.php';
 require_once '../src/Negocio/InvitacionesObserver.php';
 require_once '../src/Negocio/NMesa.php';
-
 $ruta = $_SERVER['REQUEST_URI'];
 $database = Database::getInstance();
 $conexion = $database->getConnection();
@@ -105,7 +107,6 @@ switch ($url) {
 
     case '/eventos/invitaciones/crear':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            require __DIR__ . '/../src/Negocio/NInvitacion.php';
             $nInvitacion = new NInvitacion($conexion);
             $id_evento = $_POST["id_evento"];
             $nombre_invitado = $_POST["nombre"];
@@ -118,7 +119,6 @@ switch ($url) {
         break;
 
     case '/eventos/invitaciones/editar':
-        require __DIR__ . '/../src/Negocio/NInvitacion.php';
         $nInvitacion = new NInvitacion($conexion);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $idInvitacion = $_POST["idInvitacion"];
@@ -133,7 +133,6 @@ switch ($url) {
 
     case '/eventos/invitaciones/eliminar':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            require __DIR__ . '/../src/Negocio/NInvitacion.php';
             $nInvitacion = new NInvitacion($conexion);
             $id = $_POST["id_invitacion"];
             $nInvitacion->eliminarInvitacion($id);
@@ -146,7 +145,6 @@ switch ($url) {
         $idEvento = isset($queryParams['id']) ? $queryParams['id'] : null;
 
         if ($idEvento) {
-            require __DIR__ . '/../src/Negocio/NAsistencia.php';
             $nAsistencia = new NAsistencia($conexion);
             $asistencias = $nAsistencia->obtenerAsistencias($idEvento);
             require __DIR__ . '/../src/Presentacion/views/Asistencia/registrar.php';
@@ -206,7 +204,6 @@ switch ($url) {
         $mesaId = isset($queryParams['id']) ? $queryParams['id'] : null;
         $disp = isset($queryParams['disp']) ? $queryParams['disp'] : null;
         if ($mesaId) {
-            require __DIR__ . '/../src/Negocio/NSilla.php';
             $nSilla = new NSilla($conexion);
             $sillas = $nSilla->listarSillas($mesaId);
             require __DIR__ . '/../src/Presentacion/views/sillas/gestionar.php';
@@ -215,7 +212,6 @@ switch ($url) {
         break;
 
     case '/eventos/mesas/sillas/editar':
-        require __DIR__ . '/../src/Negocio/NSilla.php';
         $nSilla = new NSilla($conexion);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $idMesa = $_POST["id_mesa"];
@@ -226,7 +222,6 @@ switch ($url) {
         }
         break;
     case '/eventos/asistencia/registrar':
-        require __DIR__ . '/../src/Negocio/NAsistencia.php';
         $nAsistencia = new NAsistencia($conexion);
         $idInvitacion = $_POST["codigoQR"];
         $idEvento = $_POST["id"];
@@ -236,7 +231,6 @@ switch ($url) {
     case '/eventos/asistencia/sse':
         $idEvento = isset($queryParams['id']) ? $queryParams['id'] : null;
         if ($idEvento) {
-            require __DIR__ . '/../src/Negocio/NAsistencia.php';
             $nAsistencia = new NAsistencia($conexion);
             $nAsistencia->emitirEventoSSE($idEvento);
         } else {

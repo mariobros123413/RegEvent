@@ -313,7 +313,7 @@
                 qrCodeUrl;
 
             // Genera el enlace con el número de celular y el código QR
-            var enlace = "https://wa.me/" + numeroCelular + "?text=" + encodeURIComponent(mensaje);
+            var enlace = "https://wa.me/+591" + numeroCelular + "?text=" + encodeURIComponent(mensaje);
 
             // Abre WhatsApp con el enlace generado
             window.open(enlace, '_blank');
