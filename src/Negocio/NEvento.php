@@ -6,10 +6,12 @@ if (session_status() == PHP_SESSION_NONE)
 
 
 require_once './../src/Datos/DEvento.php';
+require_once './../src/Negocio/IObserver.php'; // Importar la interfaz
 
 class NEvento
 {
     private $dEvento;
+    private $observers = [];
 
     public function __construct($conexion)
     {
@@ -49,11 +51,10 @@ class NEvento
 
         // Llamar al método de la capa de negocio para actualizar el evento
         $resultado = $this->dEvento->actualizarEvento($id_evento, $titulo, $direccion, $descripcion, $fechaHora);
-
         // Procesa el resultado de la actualización...
         if ($resultado) {
+            $this->notifyObservers($id_evento, $titulo, $direccion, $descripcion,$fechaHora);
             $_SESSION['evento_actualizado'] = true;
-            header("Location: /eventos/listar"); // Redirigir a la página de listar eventos
             return true;
         } else {
             echo "Hubo un error al actualizar el evento";
@@ -77,8 +78,26 @@ class NEvento
         }
     }
 
+    // Métodos del patrón Observer
+    public function registerObserver(IObserver $observer)
+    {
+        $this->observers[] = $observer;
+    }
 
+    public function removeObserver(IObserver $observer)
+    {
+        $key = array_search($observer, $this->observers, true);
+        if ($key !== false) {
+            unset($this->observers[$key]);
+        }
+    }
+
+    public function notifyObservers($id_evento, $titulo, $direccion, $descripcion, $fechaHora)
+    {
+        foreach ($this->observers as $observer) {
+            $observer->update($id_evento, $titulo, $direccion, $descripcion, $fechaHora);
+        }
+    }
 
 }
-$nEvento = new NEvento($conexion);
 ?>

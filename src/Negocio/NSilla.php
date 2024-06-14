@@ -68,6 +68,4 @@ class NSilla
         }
     }
 }
-$nSilla = new NSilla($conexion);
-
 ?>

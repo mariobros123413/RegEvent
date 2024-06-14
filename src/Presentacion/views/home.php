@@ -13,12 +13,8 @@
 </head>
 
 <body>
-
-    <!-- Barra de navegación -->
     <?php include '../src/Presentacion/views/topbar.php'; ?>
 
-
-    <!-- Contenido principal -->
     <div class="content">
         <h1>Bienvenido a Mi Proyecto</h1>
         <p>¡Explora nuestro proyecto a través de estas imágenes!</p>

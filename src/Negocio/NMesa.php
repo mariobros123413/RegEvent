@@ -85,6 +85,5 @@ class NMesa
         }
     }
 }
-$nMesa = new NMesa($conexion);
 
 ?>
