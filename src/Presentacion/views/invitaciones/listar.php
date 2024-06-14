@@ -7,6 +7,19 @@
     <link rel="stylesheet" href="../style/listar_invitaciones.css">
     <link rel="stylesheet" href="../style/buttons.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* Facebook */
+        .fa-facebook {
+            background: #3B5998;
+            color: white;
+        }
+
+        .fa-instagram {
+            background: #9b0078;
+            color: white;
+        }
+    </style>
 </head>
 
 <style>
@@ -182,19 +195,38 @@
                                 <?php echo ($invitacion['mesa_asignada']); ?>
                             </td>
                             <td>
-                                <button class="button button-qr" onclick="compartirInvitacion('<?php echo $invitacion['id_invitacion']; ?>', '<?php echo $invitacion['nro_celular']; ?>',
-    '<?php echo $invitacion['titulo']; ?>','<?php echo $invitacion['direccion']; ?> ','<?php echo $invitacion['descripcion']; ?>' , '<?php echo $invitacion['fecha']; ?>',
-    '<?php echo $invitacion['nombre_invitado']; ?> ','<?php echo $invitacion['mesa_asignada']; ?> ' )">
-                                    <i class="fa fa-whatsapp"></i>Compartir QR
+                                <button class="button button-qr"
+                                    onclick="compartirInvitacion('<?php echo $invitacion['id_invitacion']; ?>', '<?php echo $invitacion['nro_celular']; ?>',
+        '<?php echo $invitacion['titulo']; ?>', '<?php echo $invitacion['direccion']; ?>', '<?php echo $invitacion['descripcion']; ?>',
+        '<?php echo $invitacion['fecha']; ?>', '<?php echo $invitacion['nombre_invitado']; ?>','<?php echo 'whatsapp'; ?>', '<?php echo $invitacion['mesa_asignada']; ?>')">
+                                    <i class="fa fa-whatsapp"></i> Compartir por WhatsApp
                                 </button>
+
+                                <!-- Botón para compartir por Facebook -->
+                                <button class="button fa fa-facebook" style="margin: 5px;padding:5px;" onclick="compartirInvitacion('<?php echo $invitacion['id_invitacion']; ?>',
+        '<?php echo $invitacion['nro_celular']; ?>', '<?php echo $invitacion['titulo']; ?>', '<?php echo $invitacion['direccion']; ?>',
+        '<?php echo $invitacion['descripcion']; ?>', '<?php echo $invitacion['fecha']; ?>', '<?php echo $invitacion['nombre_invitado']; ?>','<?php echo 'facebook'; ?>',
+        '<?php echo $invitacion['mesa_asignada']; ?>')">
+                                    Compartir por Facebook
+                                </button>
+
+                                <!-- Botón para compartir por correo electrónico -->
+                                <button class="button fa fa-instagram" style="margin: 5px;padding:7px;" onclick="compartirInvitacion('<?php echo $invitacion['id_invitacion']; ?>',
+        '<?php echo $invitacion['nro_celular']; ?>', '<?php echo $invitacion['titulo']; ?>', '<?php echo $invitacion['direccion']; ?>',
+        '<?php echo $invitacion['descripcion']; ?>', '<?php echo $invitacion['fecha']; ?>', '<?php echo $invitacion['nombre_invitado']; ?>','<?php echo 'instagram'; ?>',
+        '<?php echo $invitacion['mesa_asignada']; ?>')">
+                                    <i class="fa fa-instagran"></i> Compartir por Instagram
+                                </button>
+
+                                <!-- Botón para editar -->
                                 <button class="button button-edit"
                                     onclick="editarInvitacion(<?php echo $invitacion['id_invitacion']; ?>)">Editar</button>
 
+                                <!-- Botón para eliminar -->
                                 <button class="button button-delete"
-                                    onclick="eliminarInvitacion(<?php echo $invitacion['id_invitacion']; ?>)">
-                                    Eliminar
-                                </button>
+                                    onclick="eliminarInvitacion(<?php echo $invitacion['id_invitacion']; ?>)">Eliminar</button>
                             </td>
+
 
                         </tr>
                     <?php endforeach; ?>
@@ -298,25 +330,62 @@
     </div>
 
     <script>
-        function compartirInvitacion(invitacionId, numeroCelular, titulo, direccion, descripcion, fecha, nombre_invitado, mesa_asignada) { //aumentar mesa_asignada, y enviar al whatsapp
-            // Genera el código QR
+        function compartirInvitacion(invitacionId, numeroCelular, titulo, direccion, descripcion, fecha, nombre_invitado, servicio, mesa_asignada) {
             var qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + encodeURIComponent(invitacionId);
-            console.log(descripcion);
-            // Formatea el número de celular para WhatsApp (elimina los caracteres no numéricos)
-            var mensaje = "¡Hola " + nombre_invitado + ", estás invitado a mi evento!\n" +
-                "Título: " + titulo + "\n" +
-                "Descripción: " + descripcion + "\n" +
-                "Dirección: " + direccion + "\n" +
-                "Nro de mesa asignada: " + mesa_asignada + "\n" +
-                "Fecha: " + fecha + "\n" +
-                "Codigo QR para el ingreso: " + "\n" +
-                qrCodeUrl;
+            console.log(servicio);
+            switch (servicio) {
+                case 'whatsapp':
+                    enviarInvitacion("whatsapp", invitacionId, numeroCelular, titulo, direccion, descripcion, fecha, nombre_invitado, mesa_asignada, qrCodeUrl);
+                    break;
+                case 'facebook':
+                    enviarInvitacion('facebook', invitacionId, numeroCelular, titulo, direccion, descripcion, fecha, nombre_invitado, mesa_asignada, qrCodeUrl);
+                    break;
+                case 'instagram':
+                    enviarInvitacion('instagram', invitacionId, numeroCelular, titulo, direccion, descripcion, fecha, nombre_invitado, mesa_asignada, qrCodeUrl);
+                    break;
+                default:
+                    console.log('Servicio no soportado');
+            }
+        }
 
-            // Genera el enlace con el número de celular y el código QR
-            var enlace = "https://wa.me/+591" + numeroCelular + "?text=" + encodeURIComponent(mensaje);
+        function enviarInvitacion(servicio, invitacionId, numeroCelular, titulo, direccion, descripcion, fecha, nombre_invitado, mesa_asignada, qrCodeUrl) {
+            console.log(`servicio ${servicio}`); // Imprimir servicio en consola
 
-            // Abre WhatsApp con el enlace generado
-            window.open(enlace, '_blank');
+            // Construir los datos a enviar en la solicitud POST
+            const formData = new URLSearchParams();
+            formData.append('invitacionId', invitacionId);
+            formData.append('numeroCelular', numeroCelular);
+            formData.append('titulo', titulo);
+            formData.append('direccion', direccion);
+            formData.append('descripcion', descripcion);
+            formData.append('fecha', fecha);
+            formData.append('nombre_invitado', nombre_invitado);
+            formData.append('mesa_asignada', mesa_asignada);
+            formData.append('servicio', servicio);
+            formData.append('qrCodeUrl', qrCodeUrl);
+
+            // Realizar la solicitud POST utilizando fetch
+            fetch('/invitacion/registrar_invitacion', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(enlace => {
+                    console.log(`Enlace generado: ${enlace}`);
+                    // Abrir ventana en blanco con el enlace generado
+                    window.open(enlace, '_blank');
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud fetch:', error);
+                });
         }
 
         function editarInvitacion(invitacionId) {

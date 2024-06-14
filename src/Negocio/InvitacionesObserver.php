@@ -1,5 +1,4 @@
 <?php
-// src/Negocio/InvitacionesObserver.php
 require_once './../src/Negocio/IObserver.php';
 require_once __DIR__ . '/../Negocio/NInvitacion.php';
 
@@ -15,6 +14,7 @@ class InvitacionesObserver implements IObserver
 
     public function update($id_evento, $titulo, $direccion, $descripcion, $fechaHora)
     {
+        // Obtener todas las invitaciones relacionadas con el evento
         $invitaciones = $this->nInvitacion->listarInvitacionesPorEventoObservers($id_evento);
 
         foreach ($invitaciones as $invitacion) {
@@ -25,6 +25,7 @@ class InvitacionesObserver implements IObserver
         }
         
     }
+
     public function getUrls()
     {
         return $this->urls;

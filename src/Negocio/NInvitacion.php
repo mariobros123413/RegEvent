@@ -78,25 +78,6 @@ class NInvitacion
             echo "Hubo un error al actualizar el evento";
         }
     }
-    public function update($id_evento, $titulo, $direccion, $descripcion, $fechaHora)
-    {
-        $invitaciones = $this->dInvitacion->obtenerInvitacionesPorEvento($id_evento);
-
-        foreach ($invitaciones as $invitacion) {
-            // Aquí iría la lógica para enviar mensajes a través de WhatsApp
-            // Ejemplo de mensaje a enviar
-            $mensaje = "El evento ha sido actualizado:\n" .
-                "Título: $titulo\n" .
-                "Dirección: $direccion\n" .
-                "Descripción: $descripcion\n" .
-                "Fecha y Hora: $fechaHora";
-
-            // Lógica para abrir WhatsApp Web con el mensaje y número del invitado
-            $numeroCelular = $invitacion['nro_celular'];
-            $urlWhatsApp = "https://wa.me/$numeroCelular?text=" . urlencode($mensaje);
-            echo "<script>window.open('$urlWhatsApp', '_blank');</script>";
-        }
-    }
 
 }
 

@@ -4,7 +4,9 @@ require_once '../src/Negocio/NEvento.php';
 require_once '../src/Negocio/NInvitacion.php';
 require_once '../src/Negocio/NAsistencia.php';
 require_once '../src/Negocio/NSilla.php';
-
+require_once '../src/Negocio/Strategys/WhatsAppInvitacionStrategy.php';
+require_once '../src/Negocio/Strategys/InstagramInvitacionStrategy.php';
+require_once '../src/Negocio/Strategys/FacebookInvitacionStrategy.php';
 require_once '../src/Datos/DInvitacion.php';
 require_once '../src/Negocio/InvitacionesObserver.php';
 require_once '../src/Negocio/NMesa.php';
@@ -13,7 +15,12 @@ $database = Database::getInstance();
 $conexion = $database->getConnection();
 $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $queryString = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+$whatsapp = new WhatsAppInvitacionStrategy();
 
+function obtenerParametroGET($nombre, $valor_por_defecto = null)
+{
+    return isset($_GET[$nombre]) ? $_GET[$nombre] : $valor_por_defecto;
+}
 parse_str($queryString, $queryParams);
 // Crear instancia de NEvento
 $nEvento = new NEvento($conexion);
@@ -237,6 +244,38 @@ switch ($url) {
             echo "ID del evento requerido.";
         }
         break;
+
+    case '/invitacion/registrar_invitacion':
+        // Obtener los parámetros necesarios para enviar la invitación
+        $invitacionId = $_POST["invitacionId"];
+        $numeroCelular = $_POST["numeroCelular"];
+        $titulo = $_POST["titulo"];
+        $direccion = $_POST["direccion"];
+        $descripcion = $_POST["descripcion"];
+        $fecha = $_POST["fecha"];
+        $nombreInvitado = $_POST["nombre_invitado"];
+        $mesaAsignada = $_POST["mesa_asignada"];
+        $plataforma = $_POST["servicio"];
+
+        // Dependiendo de la plataforma, selecciona la estrategia adecuada
+        switch ($plataforma) {
+            case 'whatsapp':
+                $estrategia = new WhatsAppInvitacionStrategy();
+                break;
+            case 'facebook':
+                $estrategia = new FacebookInvitacionStrategy();
+                break;
+            case 'instagram':
+                $estrategia = new InstagramInvitacionStrategy();
+                break;
+            default:
+                http_response_code(400);
+                echo "Plataforma no soportada";
+                exit;
+        }
+        echo $estrategia->enviarInvitacion($invitacionId, $numeroCelular, $titulo, $direccion, $descripcion, $fecha, $nombreInvitado, $mesaAsignada);
+        break;
+
 
     default:
         http_response_code(404);
